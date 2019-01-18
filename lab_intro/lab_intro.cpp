@@ -70,10 +70,15 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
       // `pixel` is a pointer to the memory stored inside of the PNG `image`,
       // which means you're changing the image directly.  No need to `set`
       // the pixel since you're directly changing the memory of the image.
-    distFromCenter = sqrt(pow(double(x-centerX),2)+pow(double(y-centerY),2));
-    luminanceDecreasePercentage = distFromCenter/2.0;
-    pixel.l=((100.0-luminanceDecreasePercentage)/100)*pixel.l;
+    distFromCenter = sqrt(pow(double(x-centerX),2.0)+pow(double(y-centerY),2.0));
+    if(distFromCenter>=160.0){
+      pixel.l = pixel.l*0.2;
     }
+    else{
+    luminanceDecreasePercentage = distFromCenter/2.0;
+    pixel.l=((100.0-luminanceDecreasePercentage)/100.0)*pixel.l;
+  }
+  }
   }
   return image;
 
@@ -94,11 +99,11 @@ PNG illinify(PNG image) {
   for (unsigned x = 0; x < image.width(); x++) {
     for (unsigned y = 0; y < image.height(); y++) {
       HSLAPixel & pixel = image.getPixel(x, y);
-      if(std::abs(pixel.h-11)>std::abs(pixel.h-216)){
-        pixel.h=11;
+      if(pixel.h<=113.5||pixel.h>=293.5){
+        pixel.h=11.0;
       }
       else{
-        pixel.h=216;
+        pixel.h=216.0;
       }
     }
   }
@@ -122,9 +127,11 @@ PNG illinify(PNG image) {
 PNG watermark(PNG firstImage, PNG secondImage) {
   for (unsigned x = 0; x < firstImage.width(); x++) {
     for (unsigned y = 0; y < firstImage.height(); y++) {
-      HSLAPixel & pixel = secondImage.getPixel(x, y);
-      if(pixel.l==1){
-        pixel.l=pixel.l+.2;
+      HSLAPixel & pixelFirstImage = firstImage.getPixel(x, y);
+      HSLAPixel & pixelSecondImage = secondImage.getPixel(x, y);
+
+      if(pixelSecondImage.l>.999&&pixelSecondImage.l<1.00001){
+        pixelFirstImage.l=pixelFirstImage.l+.2;
       }
     }
   }
