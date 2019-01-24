@@ -7,6 +7,8 @@
 #include <iostream>
 #include <stdlib.h>
 
+
+
 int main(int argc, char *argv[]) {
   if (argc == 2) {
     unsigned int width = (unsigned int)atoi(argv[1]);
@@ -18,6 +20,6 @@ int main(int argc, char *argv[]) {
     std::cout << "Rotating `in.png` as `out.png`" << std::endl;
     rotate("in.png", "out.png");
   }
-  
+
   return 0;
 }
