@@ -44,6 +44,7 @@ namespace fileio
             delete students;
         if (rooms != NULL)
             delete rooms;
+            
     }
 
     void loadStudents(const std::string& file)
