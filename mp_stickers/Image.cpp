@@ -1,6 +1,5 @@
 #include "Image.h"
 
-
 namespace cs225{
   void Image::lighten(){
     //private member variables must be accessed by using member functions
@@ -141,10 +140,55 @@ namespace cs225{
         }
       }
     }
-
   }
-  void 	Image::scale (double factor){}
-  void 	Image::scale (unsigned w, unsigned h){
+  void 	Image::scale (double factor){
+    int newHeight, newWidth;
+    //copy array
+    //average values to resized factor
+    //magic, profit
+    if(factor==1.0){
+      return;
+    }
+    else{
+      newWidth = width() * factor;
+      newHeight = height() * factor;
+      //void PNG::resize(unsigned int newWidth, unsigned int newHeight) {
 
+      resize(newWidth, newHeight);
+    }
+
+    //copy image data
+    /*HSLAPixel imageDataCopy[width()][height()];
+    for (unsigned i = 0; i < width(); i++) {
+      for (unsigned j = 0; j < height(); j++) {
+        imageDataCopy[i][j] = getPixel(i, j);
+      }
+    } */
+    /*for (unsigned i = 0; i < width(); i++) {
+        for (unsigned j = 0; j < height(); j++) {
+          getPixel(i,j)
+        }
+      }
+    }
+    */
+  }
+  void 	Image::scale (unsigned w, unsigned h){
+    double ratioInit, ratioNew;
+    int newWidth, newHeight;
+    ratioInit = double(width())/double(height());
+    ratioNew = double(w)/double(h);
+    if(ratioInit == ratioNew){
+      resize(w, h);
+    }
+    else if(ratioNew > ratioInit){
+      //height stays constant
+      newWidth=int(ratioInit*h);
+      resize(newWidth,h);
+    }
+    else{
+      //width stays constant
+      newHeight = int(w/ratioInit);
+      resize(w, newHeight);
+    }
   }
 }
