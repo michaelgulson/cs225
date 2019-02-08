@@ -1,4 +1,5 @@
 #include "Image.h"
+#include <cmath>
 
 namespace cs225{
   void Image::lighten(){
@@ -127,7 +128,23 @@ namespace cs225{
     }
 
   }
-  void 	Image::rotateColor (double degrees){}
+  void 	Image::rotateColor (double degrees){
+    for (unsigned i = 0; i < width(); i++) {
+      for (unsigned j = 0; j < height(); j++) {
+        HSLAPixel & pixel = getPixel(i, j);
+        if(pixel.h + degrees > 360){
+          pixel.h = pixel.h + degrees-360;
+        }
+        else if(pixel.h + degrees < 0){
+          pixel.h = pixel.h + degrees + 360;
+        }
+        else{
+          pixel.h = pixel.h + degrees;
+
+        }
+      }
+    }
+  }
   void 	Image::illinify (){
     for (unsigned i = 0; i < width(); i++) {
       for (unsigned j = 0; j < height(); j++) {
@@ -142,53 +159,48 @@ namespace cs225{
     }
   }
   void 	Image::scale (double factor){
-    int newHeight, newWidth;
+    unsigned newHeight, newWidth;
     //copy array
     //average values to resized factor
     //magic, profit
-    if(factor==1.0){
-      return;
-    }
-    else{
-      newWidth = width() * factor;
-      newHeight = height() * factor;
-      //void PNG::resize(unsigned int newWidth, unsigned int newHeight) {
-
-      resize(newWidth, newHeight);
-    }
-
     //copy image data
-    /*HSLAPixel imageDataCopy[width()][height()];
+    Image copyImage;
+    copyImage.resize(width(),height());
     for (unsigned i = 0; i < width(); i++) {
       for (unsigned j = 0; j < height(); j++) {
-        imageDataCopy[i][j] = getPixel(i, j);
-      }
-    } */
-    /*for (unsigned i = 0; i < width(); i++) {
-        for (unsigned j = 0; j < height(); j++) {
-          getPixel(i,j)
-        }
+        copyImage.getPixel(i,j) = getPixel(i, j);
       }
     }
-    */
+    newWidth = int(width() * factor);
+    newHeight = int(height() * factor);
+    //void PNG::resize(unsigned int newWidth, unsigned int newHeight) {
+    resize(newWidth, newHeight);
+    for (unsigned i = 0; i < newWidth; i++) {
+      for (unsigned j = 0; j < newHeight; j++) {
+        getPixel(i,j) = copyImage.getPixel(int(i/factor),int(j/factor));
+
+      }
+    }
   }
   void 	Image::scale (unsigned w, unsigned h){
-    double ratioInit, ratioNew;
+    double ratioInit, ratioNew, factor;
     int newWidth, newHeight;
     ratioInit = double(width())/double(height());
     ratioNew = double(w)/double(h);
     if(ratioInit == ratioNew){
-      resize(w, h);
+      Image::scale(ratioInit);
     }
     else if(ratioNew > ratioInit){
       //height stays constant
-      newWidth=int(ratioInit*h);
-      resize(newWidth,h);
+      newWidth = ratioInit*h;
+      factor = double(newWidth)/double(width());
+      Image::scale(factor);
     }
     else{
       //width stays constant
-      newHeight = int(w/ratioInit);
-      resize(w, newHeight);
+      newHeight = w/ratioInit;
+      factor = double(newHeight)/double(height());
+      Image::scale(factor);
     }
   }
 }
