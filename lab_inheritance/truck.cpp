@@ -139,3 +139,58 @@ void Truck::clear()
     delete engine;
 }
 
+void Truck::draw(PNG* canvas) const
+{
+    /* Code taken from
+     * http://gabrielongraphics.blogspot.com/2005/09/drawing-triangles.html */
+    const Vector2 a = this->vertex(0);
+    const Vector2 b = this->vertex(1);
+    const Vector2 c = this->vertex(2);
+    const Vector2* small = &a;
+    const Vector2* medium = &b;
+    const Vector2* large = &c;
+    const Vector2* temp;
+
+    if (small->isSouthOf(*medium)) {
+        temp = small;
+        small = medium;
+        medium = temp;
+    }
+
+    if (small->isSouthOf(*large)) {
+        temp = small;
+        small = large;
+        large = temp;
+    }
+
+    if (medium->isSouthOf(*large)) {
+        temp = medium;
+        medium = large;
+        large = temp;
+    }
+
+    vector<double> x_small_medium = Line::linearInterpolation(
+        Vector2(small->y(), small->x()), Vector2(medium->y(), medium->x()));
+    vector<double> x_medium_large = Line::linearInterpolation(
+        Vector2(medium->y(), medium->x()), Vector2(large->y(), large->x()));
+    vector<double> x_small_large = Line::linearInterpolation(
+        Vector2(small->y(), small->x()), Vector2(large->y(), large->x()));
+
+    for (int y = static_cast<int>(small->y()); y < static_cast<int>(medium->y()); y++) {
+        const Vector2 p(x_small_medium[static_cast<int>(y - small->y())],
+                        static_cast<double>(y));
+        const Vector2 q(x_small_large[static_cast<int>(y - small->y())],
+                        static_cast<double>(y));
+        const Line pq(p, q, this->color());
+        pq.draw(canvas);
+    }
+
+    for (int y = static_cast<int>(medium->y()); y < static_cast<int>(large->y()); y++) {
+        const Vector2 p(x_medium_large[static_cast<int>(y - medium->y())],
+                        static_cast<double>(y));
+        const Vector2 q(x_small_large[static_cast<int>(y - small->y())],
+                        static_cast<double>(y));
+        const Line pq(p, q, this->color());
+        pq.draw(canvas);
+    }
+}
