@@ -12,13 +12,13 @@ void StickerSheet::_copy(StickerSheet const & other){
 
   // Copy `other` to self
   imageArrSize = other.imageArrSize;
-  //basePicture=*other.getBasePicture();
-  for(unsigned j = 0; j < other.basePicture.width(); j++){
+  basePicture= other.basePicture;
+  /*for(unsigned j = 0; j < other.basePicture.width(); j++){
     for (unsigned k = 0; k < other.basePicture.height(); k++) {
       HSLAPixel & pixel =  basePicture.getPixel(j,k);
       pixel = other.basePicture.getPixel(j,k);
     }
-  }
+  }*/
   imageArr = new Image[imageArrSize];
   xPosition = new int[imageArrSize];
   yPosition = new int[imageArrSize];
@@ -37,28 +37,28 @@ void StickerSheet::_destroy(){
 
 StickerSheet::StickerSheet(const Image &picture, unsigned max){
 
-/*
+  basePicture = picture;
   imageArr= new Image[max];
   xPosition = new int[max];
   yPosition = new int[max];
-  //basePicture = picture;
-  for(unsigned j = 0; j < (*other.getBasePicture()).width(); j++){
-    for (unsigned k = 0; k < (*other.getBasePicture()).height(); k++) {
+  basePicture = picture;
+  imageArrSize = max;
+  //Image negH()
+  /*for(unsigned j = 0; j < basePicture.width(); j++){
+    for (unsigned k = 0; k <basePicture.height(); k++) {
       HSLAPixel & pixel =  basePicture.getPixel(j,k);
-      pixel = (*other.getBasePicture()).getPixel(j,k);
+      pixel = basePicture.getPixel(j,k);
     }
-  }
+  }*/
   for(unsigned i=0; i<max; i++){
-    HSLAPixel & firstPixel = imageArr[i].getPixel(0,0);;
+  /*  HSLAPixel & firstPixel = imageArr[i].getPixel(0,0);;
     firstPixel.h = -1;    ///initialize NULL stickers to have negative hues
     firstPixel.s = 0;
     firstPixel.l = 1.0;
-    firstPixel.a = 1.0;
+    firstPixel.a = 1.0;*/
     xPosition[i]=0;
     yPosition[i]=0;
   }
-  imageArrSize = max;
-  */
 }
 StickerSheet::~StickerSheet(){
   _destroy();
@@ -101,28 +101,24 @@ void 	StickerSheet::changeMaxStickers(unsigned max){
 int 	StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
   int arrFull = 0;
   for(int i=0; i<imageArrSize; i++){
-    HSLAPixel & firstPixel = imageArr[i].getPixel(0,0);
+    if(imageArr[i].width()==0){
+      imageArr[i]=sticker;
+      xPosition[i]=x;
+      yPosition[i]=y;
+      break;
+    }
+
+    else if(i==imageArrSize-1){
+      arrFull = -1;
+
+    }
+    //HSLAPixel & firstPixel = imageArr[i].getPixel(0,0);
 
     /*h = 0;
     s = 0;
     l = 1.0;
     a = 1.0;
     */
-    if(firstPixel.h<0)
-      continue;
-    else if(i==imageArrSize-1)
-      arrFull = -1;
-    else{
-      //imageArr[i]=sticker
-      for(unsigned j = 0; j < imageArr[i].width(); j++){
-        for (unsigned k = 0; k < imageArr[i].height(); k++) {
-          HSLAPixel & pixel =  imageArr[i].getPixel(j,k);
-          pixel = sticker.getPixel(j,k);
-        }
-      }
-      xPosition[i]=x;
-      yPosition[i]=y;
-    }
   }
   return arrFull;
 }
@@ -157,23 +153,26 @@ Image 	StickerSheet::render() const{
   //return StickerSheet as an image
   Image returnImage(basePicture);
   for(int i = 0; i < imageArrSize; i++){
-    for (int j = 0; j < int(returnImage.width()); j++) {
-      for (int k = 0; k < int(returnImage.height()); k++) {
+    for (int j = 0; j < int(basePicture.width()); j++) {
+      for (int k = 0; k < int(basePicture.height()); k++) {
+        if(imageArr[i].width()==0){
+          continue;
+        }
         HSLAPixel & pixel = returnImage.getPixel(j,k);
         //j is not within xPosition-imageArr[i].width()) continue
-        /*if(j<xPosition[i]||j>xPosition[i]+int(imageArr[i].width()))
+
+        //commented out conditions for testing
+        if(j<xPosition[i]||j>(xPosition[i]+int(imageArr[i].width())))
           continue;
         //k is within yPosition-imageArr[i].height()
         else if(k<yPosition[i]||k>yPosition[i]+int(imageArr[i].height()))
           continue;
         //i is within xPosition-imageArr[j].width())
         //j is within yPosition-imageArr[k].height()
-        else if(pixel.a==0.0)
+        else if(imageArr[i].getPixel(j-xPosition[i],k-yPosition[i]).a==0.0)
           continue;
-        else if(pixel.h<0)////NULL image
-          continue;
-        else*/
-          pixel = imageArr[i].getPixel(j,k);
+        else
+          pixel = imageArr[i].getPixel(j-xPosition[i],k-yPosition[i]);
       }
     }
   }

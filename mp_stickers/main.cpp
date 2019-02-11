@@ -21,10 +21,13 @@ int main() {
 
   oneThirdWidth = alma.width()/3;
   oneThirdHeight = alma.height()/3;
+  printf("%d\n", oneThirdWidth);
+  printf("%d\n", oneThirdHeight);
 
   StickerSheet myStickers(alma, 3);
   for(int i=0; i<3; i++){
-    myStickers.addSticker(I,i*oneThirdWidth,i*oneThirdHeight);
+    if(myStickers.addSticker(I,i*oneThirdWidth,i*oneThirdHeight)==-1)
+      printf("Error adding sticker\n");
   }
 
   result = myStickers.render();
