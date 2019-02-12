@@ -100,6 +100,12 @@ void 	StickerSheet::changeMaxStickers(unsigned max){
 }
 int 	StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
   int arrFull = 0;
+  if(x+sticker.width()>basePicture.width()){
+    return -1;
+  }
+  else if(y+sticker.height()>basePicture.height()){
+    return -1;
+  }
   for(int i=0; i<imageArrSize; i++){
     if(imageArr[i].width()==0){
       imageArr[i]=sticker;
@@ -155,6 +161,10 @@ Image 	StickerSheet::render() const{
   for(int i = 0; i < imageArrSize; i++){
     for (int j = 0; j < int(imageArr[i].width()); j++) {
       for (int k = 0; k < int(imageArr[i].height()); k++) {
+
+        if((j+xPosition[i])>=(int(basePicture.width())-1)||k+yPosition[i]>=(int(basePicture.height()))-1){
+          continue;
+        }
         HSLAPixel & pixel = returnImage.getPixel(j+xPosition[i], k+yPosition[i]);
 
         if((imageArr[i].getPixel(j,k)).a == 0){

@@ -25,10 +25,12 @@ int main() {
   printf("%d\n", oneThirdHeight);
 
   StickerSheet myStickers(alma, 3);
-  for(int i=0; i<3; i++){
+  for(int i=0; i<2; i++){
     if(myStickers.addSticker(I,i*oneThirdWidth,i*oneThirdHeight)==-1)
       printf("Error adding sticker\n");
   }
+  if(myStickers.addSticker(I, 2*oneThirdWidth, 1*oneThirdHeight)==-1)
+    printf("Error adding sticker\n");
 
   result = myStickers.render();
   result.writeToFile("myImage.png");
