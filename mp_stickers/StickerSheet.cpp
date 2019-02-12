@@ -11,6 +11,9 @@ void StickerSheet::_copy(StickerSheet const & other){
   //delete[] imageArr;
 
   // Copy `other` to self
+  delete [] imageArr;
+  delete [] xPosition;
+  delete [] yPosition;
   imageArrSize = other.imageArrSize;
   basePicture= other.basePicture;
   /*for(unsigned j = 0; j < other.basePicture.width(); j++){
@@ -91,20 +94,37 @@ void 	StickerSheet::changeMaxStickers(unsigned max){
   Image * newimageArr = new Image[max];
   int * newxPosition = new int[max];
   int * newyPosition = new int[max];
-  for(unsigned i=0; i<max; i++){
-    newimageArr[i] = imageArr[i];
-    newxPosition[i] = xPosition[i];
-    newyPosition[i] = yPosition[i];
+
+  Image emptyImage;
+
+  if(int(max)>imageArrSize){
+    for(unsigned i=0; i<unsigned(imageArrSize); i++){
+      newimageArr[i] = imageArr[i];
+      newxPosition[i] = xPosition[i];
+      newyPosition[i] = yPosition[i];
+    }
+
+    for(unsigned i=imageArrSize; i<max; i++){
+      newimageArr[i] = emptyImage;
+    }
+ }
+  else{
+    for(unsigned i=0; i<max; i++){
+      newimageArr[i] = imageArr[i];
+      newxPosition[i] = xPosition[i];
+      newyPosition[i] = yPosition[i];
+    }
   }
 
   delete [] imageArr;
   delete [] xPosition;
   delete [] yPosition;
 
+  imageArrSize=max;
   imageArr= newimageArr;
   xPosition = newxPosition;
   yPosition = newyPosition;
-
+}
 
   /*if(int(max)<imageArrSize){
     for(int i = 0; i<int(max); i++){
@@ -128,15 +148,15 @@ void 	StickerSheet::changeMaxStickers(unsigned max){
     }
     delete [] copyArr;
   }*/
-}
+
 int 	StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
   int arrFull = 0;
-  if(x+sticker.width()>basePicture.width()){
+/*  if(x+sticker.width()>basePicture.width()){
     return -1;
   }
   else if(y+sticker.height()>basePicture.height()){
     return -1;
-  }
+  }*/
   for(int i=0; i<imageArrSize; i++){
     if(imageArr[i].width()==0){
       imageArr[i]=sticker;
@@ -160,9 +180,14 @@ int 	StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
   return arrFull;
 }
 bool 	StickerSheet::translate(unsigned index, unsigned x, unsigned y){
-  xPosition[index] = x;
-  yPosition[index] = y;
-  return true;
+  if(imageArr[index].width()==0){
+    return false;
+  }
+  else{
+    xPosition[index] = x;
+    yPosition[index] = y;
+    return true;
+  }
 }
 void 	StickerSheet::removeSticker(unsigned index){
 
@@ -197,14 +222,24 @@ Image *  StickerSheet::getSticker(unsigned index){
 }
 Image 	StickerSheet::render() const{
   //return StickerSheet as an image
+  //Image newbasePicture;
   Image returnImage(basePicture);
+  for(int i = 0; i < imageArrSize; i++){
+    if((int(imageArr[i].width())+xPosition[i])>(int(returnImage.width()))){
+      returnImage.resize(int(imageArr[i].width())+xPosition[i], basePicture.height());
+    }
+    if(int(imageArr[i].height())+yPosition[i]>(int(returnImage.height()))){
+      returnImage.resize( basePicture.width(), int(imageArr[i].height())+yPosition[i]);
+    }
+  }
+
   for(int i = 0; i < imageArrSize; i++){
     for (int j = 0; j < int(imageArr[i].width()); j++) {
       for (int k = 0; k < int(imageArr[i].height()); k++) {
         //double check if sticker is outside bounds for basePicture
-        if((j+xPosition[i])>=(int(basePicture.width())-1)||k+yPosition[i]>=(int(basePicture.height()))-1){
+        /*if((j+xPosition[i])>=(int(basePicture.width())-1)||k+yPosition[i]>=(int(basePicture.height()))-1){
           continue;
-        }
+        }*/
         HSLAPixel & pixel = returnImage.getPixel(j+xPosition[i], k+yPosition[i]);
 
         if((imageArr[i].getPixel(j,k)).a == 0){
