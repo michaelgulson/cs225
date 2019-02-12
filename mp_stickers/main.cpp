@@ -29,7 +29,7 @@ int main() {
     if(myStickers.addSticker(I,i*oneThirdWidth,i*oneThirdHeight)==-1)
       printf("Error adding sticker\n");
   }
-  if(myStickers.addSticker(I, 2*oneThirdWidth, 1*oneThirdHeight)==-1)
+  if(myStickers.addSticker(I, 2*oneThirdWidth, 0*oneThirdHeight)==-1)
     printf("Error adding sticker\n");
 
   result = myStickers.render();

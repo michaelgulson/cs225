@@ -94,9 +94,11 @@ void 	StickerSheet::changeMaxStickers(unsigned max){
   }
   delete [] imageArr;
   imageArr = new Image[max];
-  for(unsigned i = 0; i<max; i++){
+  for(int i = 0; i<imageArrSize; i++){
       imageArr[i] = copyArr[i];
   }
+  delete [] copyArr;
+
 }
 int 	StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
   int arrFull = 0;
