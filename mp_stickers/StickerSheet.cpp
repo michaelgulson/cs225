@@ -11,9 +11,9 @@ void StickerSheet::_copy(StickerSheet const & other){
   //delete[] imageArr;
 
   // Copy `other` to self
-  delete [] imageArr;
+  /*delete [] imageArr;
   delete [] xPosition;
-  delete [] yPosition;
+  delete [] yPosition;*/
   imageArrSize = other.imageArrSize;
   basePicture= other.basePicture;
   /*for(unsigned j = 0; j < other.basePicture.width(); j++){
@@ -27,8 +27,8 @@ void StickerSheet::_copy(StickerSheet const & other){
   yPosition = new int[imageArrSize];
   for (int i = 0; i < imageArrSize; i++) {
     imageArr[i] = other.imageArr[i];
-    xPosition[i] = xPosition[i];
-    yPosition[i] = yPosition[i];
+    xPosition[i] = other.xPosition[i];
+    yPosition[i] = other.yPosition[i];
   }
 }
 
@@ -72,7 +72,7 @@ StickerSheet::StickerSheet(const StickerSheet &other){
     addsticker(*other.getSticker(i), other.getxPosition(i), other.getyPosition(i));
   }*/
   //imageArr[0].getPixel(0,0) = NULL;
-  _destroy();
+  //_destroy();
   _copy(other);
 }
 const StickerSheet & 	StickerSheet::operator= (const StickerSheet &other){
@@ -116,9 +116,7 @@ void 	StickerSheet::changeMaxStickers(unsigned max){
     }
   }
 
-  delete [] imageArr;
-  delete [] xPosition;
-  delete [] yPosition;
+  _destroy();
 
   imageArrSize=max;
   imageArr= newimageArr;
