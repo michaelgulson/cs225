@@ -153,7 +153,25 @@ Image 	StickerSheet::render() const{
   //return StickerSheet as an image
   Image returnImage(basePicture);
   for(int i = 0; i < imageArrSize; i++){
-    for (int j = 0; j < int(basePicture.width()); j++) {
+    for (int j = 0; j < int(imageArr[i].width()); j++) {
+      for (int k = 0; k < int(imageArr[i].height()); k++) {
+        HSLAPixel & pixel = returnImage.getPixel(j+xPosition[i], k+yPosition[i]);
+
+        if((imageArr[i].getPixel(j,k)).a == 0){
+          continue;
+        }
+        else{
+        pixel = imageArr[i].getPixel(j,k);
+        }
+      }
+    }
+  }
+
+    return returnImage;
+}
+}    //namespace cs225{}
+
+/*    for (int j = 0; j < int(basePicture.width()); j++) {
       for (int k = 0; k < int(basePicture.height()); k++) {
         if(imageArr[i].width()==0){
           continue;
@@ -173,12 +191,8 @@ Image 	StickerSheet::render() const{
           continue;
         else
           pixel = imageArr[i].getPixel(j-xPosition[i],k-yPosition[i]);
-      }
-    }
-  }
-  return returnImage;
-}
-} //namespace cs225{}
+      }*/
+ //namespace cs225{}
 /*bool StickerSheet::operator!= (StickerSheet const & other) const {
   return !(*this == other);
 }
