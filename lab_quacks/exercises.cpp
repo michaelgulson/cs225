@@ -22,8 +22,15 @@
  */
 int RecursionExercises::sumDigits(int n)
 {
-
-    return -1;
+  //nonnegative
+  int modN;
+  if(n/10<1){
+    return n;
+  }
+  else{
+    modN= n%10;
+    return (RecursionExercises::sumDigits(n)+modN);
+  }
 }
 
 /**
@@ -45,6 +52,9 @@ int RecursionExercises::sumDigits(int n)
  */
 int RecursionExercises::triangle(int rows)
 {
+    if(rows==1)
+      return 1;
+    else
+      return RecursionExercises::triangle(rows-1)+rows;
 
-    return -1;
 }

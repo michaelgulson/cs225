@@ -29,8 +29,40 @@ namespace QuackFun {
 template <typename T>
 T sum(stack<T>& s)
 {
-
+/*    T  sum, first,second;
     // Your code here
+    if(s.size() < 1){
+      return sum;
+    }
+    else if(s.size()==1){
+      sum = s.pop();
+      s.push(sum);
+      return sum;
+
+    }
+    else if(s.size()==2){
+      first = s.pop();
+      second = s.pop();
+
+      sum = first + second;
+
+      s.push(second);
+      s.push(first);
+      return sum;
+    }
+    else{
+      first = s.pop();
+      second = s.pop();
+
+      sum = first + second + sum(s);
+
+      s.push(second);
+      s.push(first);
+    }
+    */
+
+
+
     return T(); // stub return value (0 for primitive types). Change this!
                 // Note: T() is the default value for objects, and 0 for
                 // primitive types
