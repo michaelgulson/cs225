@@ -32,17 +32,16 @@ namespace cs225 {
   }
 
   bool HSLAPixel::operator== (HSLAPixel const & other) const {
-    // thank/blame Wade for the following function
-    if (fabs(a - other.a) > 0.01) { return false; }
+    if (fabs(a - other.a) > 0.0000001) { return false; }
     if ( a == 0 ) { return true; }
 
-    if (fabs(l - other.l) > 0.01) { return false; }
+    if (fabs(l - other.l) > 0.0000001) { return false; }
     if (l == 0 || l == 1) { return true; }
 
     if (fabs(s - other.s) > 0.01) { return false; }
     if (s == 0) { return true; }
 
-    if (fabs(h - other.h) < 0.5 || fabs(h - other.h) > 359.5 ) { return true; }
+    if (fabs(h - other.h) < 0.0000001 || fabs(h - other.h) > (360.0 - 0.0000001) ) { return true; }
     else { return false; }
 }
 
