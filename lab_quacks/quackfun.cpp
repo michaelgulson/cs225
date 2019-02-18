@@ -284,38 +284,38 @@ void scramble(queue<T>& q)
                 q.push(temp);
               }
             }
+            cnt=cnt-blockSize;
+            blockSize++;
           }
         else{
-          blockSize = cnt;
+        //  blockSize = cnt;
             if(blockSize%2==1){
-              for(int j=0; j<blockSize; j++){
+              for(int j=0; j<cnt; j++){
                   temp = q.front();
                   q.push(temp);
                   q.pop();
                 }
               }
               else{
-                for(int j=0; j<blockSize; j++){
+                for(int j=0; j<cnt; j++){
                   temp = q.front();
                   s.push(temp);
                   q.pop();
                 }
-                for(int j=0; j<blockSize; j++){
+                for(int j=0; j<cnt; j++){
                   temp = s.top();
                   s.pop();
                   q.push(temp);
                 }
               }
-            return;
+            cnt=0;
           }
-          cnt=cnt-blockSize;
-          blockSize++;
-
   }
     // optional: queue<T> q2;
     //block size variable starting at 1 increment
     //
     // Your code here
+  return;
 }
 
 /**
