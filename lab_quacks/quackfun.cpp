@@ -3,6 +3,8 @@
  * This is where you will implement the required functions for the
  * stacks and queues portion of the lab.
  */
+ #include <string.h>
+ #include <cmath>
 
 namespace QuackFun {
 
@@ -29,14 +31,14 @@ namespace QuackFun {
 template <typename T>
 T sum(stack<T>& s)
 {
-   T sum=0;
-   T first,second;
+   T sum=T();
+   T first;
     // base case empty stack
     if(s.size() < 1){
       return sum;
     }
     //base case one element on stack
-    else if(s.size()==1){
+  /*  else if(s.size()==1){
       sum = s.top();
       return sum;
     }
@@ -50,14 +52,12 @@ T sum(stack<T>& s)
       s.push(second);
       s.push(first);
       return sum;
-    }
+    }*/
     else{
       first = s.top();
       s.pop();
-      second = s.top();
-      s.pop();
-      sum = first + second + QuackFun::sum(s);
-      s.push(second);
+      sum = first + QuackFun::sum(s);
+    //  s.push(second);
       s.push(first);
       return sum;
     }
@@ -84,10 +84,102 @@ T sum(stack<T>& s)
  */
 bool isBalanced(queue<char> input)
 {
+  stack<char> s;
+  /*while(input.empty()!=true){
+    frontQueue = input.front();
+    if(strncmp(frontQueue,"[",2)==0){
+      s.push(1);
+    }
+    else if(strncmp(frontQueue,"[",2)==0){
+      s.push(-1);
+    }
+    input.pop();
+  }*/
+  while(input.empty()!=true){
+    //frontQueue = input.front();
+    if(input.front()=='['){
+      s.push('[');
+    }
+    else if(input.front()==']'){
+      if(s.empty())
+        return false;
+      s.pop();
+    }
+    input.pop();
+  }
 
-    // @TODO: Make less optimistic
+
+/*  while(s.empty()!=true){
+    s.top();
+    s.pop();
+    balance+=topStack;
+    if(balance<0){
+      return false;
+    }
+  }*/
+  if(s.empty()){
     return true;
+  }
+  else{
+    return false;
+  }
+
 }
+
+/*
+void scramble_helper(bool underFive, int size, stack<T> * s, queue<T> & q){
+  //since stack passed as ptr, changed member functions to ->
+
+  if(underFive){
+    for(int i=0; i<size; i++){
+      if(i%2==1){
+        for(int j=0; j<i; j++){
+          T temp = q.front();
+          q.push(temp);
+          q.pop();
+        }
+      }
+    else{
+      for(int j=0; j<i; j++){
+        T temp = q.front();
+        s->push(temp);
+        q.pop();
+      }
+      for(int j=0; j<i; j++){
+        temp = s.front();
+        s->pop();
+        q.push(temp);
+      }
+    }
+  }
+}
+else
+  while(cntFive<5){
+    if(i%2==1){
+      for(int j=0; j<i; j++){
+        T temp = q.front();
+        q.push(temp);
+        q.pop();
+      }
+    }
+    else{
+      for(int j=0; j<i; j++){
+        T temp = q.front();
+        s->push(temp);
+        q.pop();
+      }
+      for(int j=0; j<i; j++){
+        temp = s->front();
+        s->pop();
+        q.push(temp);
+      }
+    }
+    i++;
+    cntFive++;
+}
+
+
+*/
 
 /**
  * Reverses even sized blocks of items in the queue. Blocks start at size
@@ -107,9 +199,120 @@ bool isBalanced(queue<char> input)
 template <typename T>
 void scramble(queue<T>& q)
 {
+  /*  stack<T> s;
+    int modFive, qSize, cntDivFive, cntFive;
+    bool underFive=false;
+    qSize = q.size();
+    cntDivFive = ceil(double(qsize)/double(5));
+    for(int i=0; i<cntDivFive; i++){
+      if(qSize/5<1){
+        underFive= true
+        scramble_helper(underFive, qSize, &s,q);
+      }
+      else{
+        scramble_helper(underFive, 0, &s, q);
+      }
+      qSize= qSize-5;
+    }
+*/
+    /*for(int i= 1; i<6; i++){
+      if(i%2==1){
+        for(int j=0; j<i; j++){
+          T temp = q.front();
+          q.push(temp);
+          q.pop();
+        }
+      }
+      else{
+        for(int j=0; j<i; j++){
+          T temp = q.front();
+          s.push(temp);
+          q.pop();
+        }
+        for(int j=0; j<i; j++){
+          temp = s.front();
+          s.pop();
+          q.push(temp);
+        }
+      }
+    }*/
+    /*int i =0;
+    while(cntFive<5){
+      if(i%2==1){
+        for(int j=0; j<i; j++){
+          T temp = q.front();
+          q.push(temp);
+          q.pop();
+        }
+      }
+      else{
+        for(int j=0; j<i; j++){
+          T temp = q.front();
+          s.push(temp);
+          q.pop();
+        }
+        for(int j=0; j<i; j++){
+          temp = s.front();
+          s.pop();
+          q.push(temp);
+        }
+        i++;
+        cntFive++;
+      }*/
     stack<T> s;
-    // optional: queue<T> q2;
+    int blockSize=1;
+    int cnt=q.size();
+    T temp;
+    while(cnt>0){
+      if(blockSize>cnt){
+          if(blockSize%2==1){
+            for(int j=0; j<blockSize; j++){
+                temp = q.front();
+                q.push(temp);
+                q.pop();
+              }
+            }
+            else{
+              for(int j=0; j<blockSize; j++){
+                temp = q.front();
+                s.push(temp);
+                q.pop();
+              }
+              for(int j=0; j<blockSize; j++){
+                temp = s.top();
+                s.pop();
+                q.push(temp);
+              }
+            }
+          }
+        else{
+            if(blockSize%2==1){
+              for(int j=0; j<blockSize; j++){
+                  T temp = q.front();
+                  q.push(temp);
+                  q.pop();
+                }
+              }
+              else{
+                for(int j=0; j<blockSize; j++){
+                  T temp = q.front();
+                  s.push(temp);
+                  q.pop();
+                }
+                for(int j=0; j<blockSize; j++){
+                  temp = s.top();
+                  s.pop();
+                  q.push(temp);
+                }
+              }
+          }
+          cnt=cnt-blockSize;
+          blockSize++;
 
+  }
+    // optional: queue<T> q2;
+    //block size variable starting at 1 increment
+    //
     // Your code here
 }
 
