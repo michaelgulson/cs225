@@ -24,12 +24,12 @@ int RecursionExercises::sumDigits(int n)
 {
   //nonnegative
   int modN;
-  if(n/10<1){
+  if((n/10)<1){
     return n;
   }
   else{
     modN= n%10;
-    return (RecursionExercises::sumDigits(n)+modN);
+    return (RecursionExercises::sumDigits(n/10)+modN);
   }
 }
 
@@ -52,7 +52,12 @@ int RecursionExercises::sumDigits(int n)
  */
 int RecursionExercises::triangle(int rows)
 {
-    if(rows==1)
+
+
+    if(rows<1){
+      return 0;
+    }
+    else if(rows==1)
       return 1;
     else
       return RecursionExercises::triangle(rows-1)+rows;
