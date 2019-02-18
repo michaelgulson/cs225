@@ -264,7 +264,7 @@ void scramble(queue<T>& q)
     int cnt=q.size();
     T temp;
     while(cnt>0){
-      if(blockSize>cnt){
+      if(blockSize<cnt){
           if(blockSize%2==1){
             for(int j=0; j<blockSize; j++){
                 temp = q.front();
@@ -286,16 +286,17 @@ void scramble(queue<T>& q)
             }
           }
         else{
+          blockSize = cnt;
             if(blockSize%2==1){
               for(int j=0; j<blockSize; j++){
-                  T temp = q.front();
+                  temp = q.front();
                   q.push(temp);
                   q.pop();
                 }
               }
               else{
                 for(int j=0; j<blockSize; j++){
-                  T temp = q.front();
+                  temp = q.front();
                   s.push(temp);
                   q.pop();
                 }
@@ -305,6 +306,7 @@ void scramble(queue<T>& q)
                   q.push(temp);
                 }
               }
+            return;
           }
           cnt=cnt-blockSize;
           blockSize++;
