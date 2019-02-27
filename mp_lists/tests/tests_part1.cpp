@@ -49,6 +49,30 @@ TEST_CASE("List::insert contents", "[weight=5][part=1][valgrind]") {
     REQUIRE( "< 1 2 3 3 2 1 >" == s.str() );
 }
 
+/*TEST_CASE("List::waterfall", "[weight=20][part=1][valgrind]") {
+
+  List<int> list;
+
+  list.insertBack(3);
+  list.insertBack(2);
+  list.insertBack(1);
+  list.insertFront(3);
+  list.insertFront(2);
+  list.insertFront(1);
+
+  stringstream s;
+
+    List<HSLAPixel> list = imageToList(in);
+    list.waterfall();
+    PNG out = listToImage(list, in.width(), in.height());
+    out.writeToFile("actual-waterfall.png");
+
+    INFO("Your output image saved as actual-waterfall.png");
+    REQUIRE( expected == out );
+}
+*/
+
+
 
 TEST_CASE("List::waterfall", "[weight=20][part=1][valgrind]") {
 
@@ -82,6 +106,29 @@ TEST_CASE("List::split simple", "[weight=5][part=1][valgrind]") {
     REQUIRE( "< 1 2 >" == s1.str() );
     REQUIRE( "< 3 4 >" == s2.str() );
 }
+
+/*TEST_CASE("List::split simple 2", "[weight=5][part=1][valgrind]") {
+    List<int> list;
+
+    list.insertBack(1);
+    list.insertBack(2);
+    list.insertBack(3);
+    list.insertBack(4);
+    list.insertBack(5);
+    list.insertBack(6);
+    list.insertBack(7);
+    list.insertBack(8);
+    List<int> slist = list.split(2);
+    stringstream s1, s2;
+
+    list.print(s1);
+    slist.print(s2);
+
+    REQUIRE( "< 1 2 3c4>" == s1.str() );
+    REQUIRE( "< 5 6 7 8 >" == s2.str() );
+}
+*/
+
 
 TEST_CASE("List::split images", "[weight=10][part=1]") {
 
@@ -237,5 +284,3 @@ TEST_CASE("List::ListIterator::end is not ::begin in a non-empty list", "[weight
 
     REQUIRE( (bool)(list.begin() != list.end()) );
 }
-
-

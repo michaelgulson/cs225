@@ -8,8 +8,9 @@
 template <class T>
 List<T>::List() {
   // @TODO: graded in MP3.1
-    ListNode* head_ = NULL;
-    ListNode* tail_ = NULL;
+    head_ = NULL;
+    tail_ = NULL;
+
 }
 
 
@@ -62,14 +63,15 @@ void List<T>::insertFront(T const & ndata) {
   /// @todo Graded in MP3.1
   ListNode * newNode = new ListNode(ndata);
   //newNode -> next = head_;
-  if (head_ != NULL) {
+  if(head_==NULL){
+    head_ = newNode;
+    tail_=newNode;
+  }
+  else {
     newNode->next = head_;
     head_->prev = newNode;
+    head_=newNode;
   }
-  if (tail_ == NULL&&head_!=NULL) {
-    tail_ = head_;
-  }
-  head_ = newNode;
 
   length_++;
 
@@ -88,18 +90,14 @@ void List<T>::insertBack(const T & ndata) {
   //newNode -> next = head_;
   if(head_==NULL){
       head_= newNode;
+      tail_= newNode;
+//      return;
   }
-  else if (tail_ != NULL) {
+  else{
     newNode->prev = tail_;
     tail_->next = newNode;
     tail_ = newNode;
   }
-  else{
-    newNode->prev = head_;
-    head_->next =newNode;
-    tail_=newNode;
-  }
-
   length_++;
 
 
@@ -196,30 +194,29 @@ void List<T>::waterfall() {
   /// @todo Graded in MP3.1
   //remove
   ListNode * curr;
-  ListNode * deleteNode;
+  ListNode * backNode;
+  ListNode * prev;
   curr = head_;
   int i=0;
-  while(curr!=NULL&&curr!=tail_){
+  while(curr!=NULL&&curr!=tail_&&curr->prev!=NULL){
     if(i%2==1){
       //append to back
-
-      deleteNode = curr;
+      prev = curr->prev;
+      backNode= curr;
       curr = curr->next;
-      std::cout<< "deleteNode->data"<< i<< ":"<<deleteNode->data<< endl;
-      std::cout<< "curr->data"<< i<< ":"<<curr->data<< endl;
-      curr->prev = deleteNode->prev;
-      this->insertBack(deleteNode->data);
-      deleteNode->prev->next=curr;
-      delete deleteNode;
-      i++;
+
+      curr->prev = prev;
+      prev->next = curr;
+      tail_->next=backNode;
+      backNode->prev =tail_;
+      tail_=backNode;
     }
     else{
-    curr = curr->next;
-    i++;
+      curr = curr->next;
     }
+    i++;
   }
   //append to back
-
 
 }
 
@@ -245,6 +242,10 @@ void List<T>::reverse() {
 template <typename T>
 void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.2
+  /*ListNode * curr;
+  while(curr!=endpoint){
+
+  }*/
 }
 
 /**
@@ -297,7 +298,51 @@ void List<T>::mergeWith(List<T> & otherList) {
 template <typename T>
 typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) {
   /// @todo Graded in MP3.2
-  return NULL;
+  if(first==NULL){
+    return second;
+  }
+  if(second==NULL){
+    return first;
+  }
+  ListNode * prevFront;
+  ListNode * firstCurr = first;
+  ListNode * secondCurr = second;
+  ListNode * returnHead;
+  ListNode * next1;
+  ListNode * next2;
+
+  while(firstCurr!=NULL&& secondCurr!=NULL){
+    //connect previous value
+    if(firstCurr!=first){
+
+
+    }
+    next1=firstCurr->next;
+    next2=secondCurr->next;
+    if(firstCurr->data<secondCurr->data){
+      if(firstCurr==first){
+        returnHead=first;
+        //no need to connect previous value
+        prevFront= secondCurr;
+        continue;
+      }
+      firstCurr->next=secondCurr;
+      secondCurr->prev=firstCurr;
+    }
+    else{
+      if(secondCurr==second){
+        returnHead=second;
+        //no need to connect previous value
+        prevFront= firstCurr;
+      }
+      secondCurr->next=firstCurr;
+      firstCurr->prev=secondCurr;
+
+    }
+    firstCurr=next1;
+    secondCurr=next2;
+  }
+  return returnHead;
 }
 
 /**
