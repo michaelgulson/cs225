@@ -1,3 +1,5 @@
+
+#include <iostream>
 /**
  * @file list.cpp
  * Doubly Linked List (MP 3).
@@ -9,6 +11,7 @@ List<T>::List() {
     ListNode* head_ = NULL;
     ListNode* tail_ = NULL;
 }
+
 
 /**
  * Returns a ListIterator with a position at the beginning of
@@ -40,11 +43,11 @@ void List<T>::_destroy() {
   ListNode * curr;
   ListNode * nextNode;
   curr = head_;
-  do{
+  while(curr!=0){
     nextNode=curr->next;
     delete curr;
     curr = nextNode;
-  }while(curr->next!=0);
+  }
 
 }
 
@@ -87,9 +90,14 @@ void List<T>::insertBack(const T & ndata) {
       head_= newNode;
   }
   else if (tail_ != NULL) {
-    newNode->prev = head_;
+    newNode->prev = tail_;
     tail_->next = newNode;
     tail_ = newNode;
+  }
+  else{
+    newNode->prev = head_;
+    head_->next =newNode;
+    tail_=newNode;
   }
 
   length_++;
@@ -116,9 +124,15 @@ void List<T>::insertBack(const T & ndata) {
 template <typename T>
 typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
   /// @todo Graded in MP3.1
+//  ListNode * curr = start;
+  //ListNode * returnSplit;
+  //ListNode * prevNode;
+  //int i=0;
+
+
   ListNode * curr = start;
 
-  for (int i = 0; i < splitPoint || curr != NULL; i++) {
+  for (int i = 0; i < splitPoint && curr != NULL; i++) {
     curr = curr->next;
   }
 
@@ -127,7 +141,43 @@ typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
       curr->prev = NULL;
   }
 
-  return NULL;
+  return curr;
+
+  /*
+  //base cases
+  if(curr==NULL||splitPoint<=0){
+    return NULL;
+  }
+  //std::cout<< "curr->data"<< i<< ":"<<curr->data<< endl;
+  //traverse LL
+  for(int i=0; i<splitPoint&&curr!=NULL; i++){
+    curr = curr->next;
+    //std::cout<< "curr->data"<< i<< ":"<<curr->data<< endl;
+  }
+
+  //split (curr should be at the location of the start of the new list)
+  if (curr != NULL) {
+    if(curr->prev==NULL){
+      return curr;
+    }
+      returnSplit = curr;
+      prevNode = curr->prev;
+  //    std::cout<< "returnSplit->data"<< i<< ":"<<returnSplit->data<< endl;
+      //std::cout<< curr->prev->data<< endl;
+      //std::cout<< "curr->prev->next->"<< ":"<<curr->prev->next->data<< endl;
+      tail_= prevNode;
+//      std::cout<< "tail_= curr->prev"<< ":"<<tail_->data<< endl;
+
+//      curr->next = NULL;
+      prevNode->next =NULL;
+//std::cout<< "returnSplit->prev->data"<< ":"<<prevNode->data<< endl;
+      returnSplit->prev =NULL;
+
+      return returnSplit;
+  }
+  else{
+    return curr;
+  }*/
 }
 
 /**
