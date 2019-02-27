@@ -29,7 +29,7 @@ typename List<T>::ListIterator List<T>::begin() const {
 template <typename T>
 typename List<T>::ListIterator List<T>::end() const {
   // @TODO: graded in MP3.1
-  return List<T>::ListIterator(tail_);
+  return List<T>::ListIterator(NULL);
 }
 
 
@@ -131,17 +131,18 @@ typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
 
 
   ListNode * curr = start;
-
+  //return curr;
   for (int i = 0; i < splitPoint && curr != NULL; i++) {
     curr = curr->next;
   }
 
-  if (curr != NULL) {
+  if (curr != NULL && curr->prev!=NULL) {
       curr->prev->next = NULL;
       curr->prev = NULL;
   }
 
   return curr;
+
 
   /*
   //base cases
@@ -180,6 +181,7 @@ typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
   }*/
 }
 
+
 /**
  * Modifies the List using the waterfall algorithm.
  * Every other node (starting from the second one) is removed from the
@@ -192,6 +194,33 @@ typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
 template <typename T>
 void List<T>::waterfall() {
   /// @todo Graded in MP3.1
+  //remove
+  ListNode * curr;
+  ListNode * deleteNode;
+  curr = head_;
+  int i=0;
+  while(curr!=NULL&&curr!=tail_){
+    if(i%2==1){
+      //append to back
+
+      deleteNode = curr;
+      curr = curr->next;
+      std::cout<< "deleteNode->data"<< i<< ":"<<deleteNode->data<< endl;
+      std::cout<< "curr->data"<< i<< ":"<<curr->data<< endl;
+      curr->prev = deleteNode->prev;
+      this->insertBack(deleteNode->data);
+      deleteNode->prev->next=curr;
+      delete deleteNode;
+      i++;
+    }
+    else{
+    curr = curr->next;
+    i++;
+    }
+  }
+  //append to back
+
+
 }
 
 /**
