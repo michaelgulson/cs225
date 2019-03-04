@@ -1,5 +1,4 @@
-/**
- * @file huffman_tree.h
+ /* @file huffman_tree.h
  * Definition of a Huffman Tree class.
  */
 
@@ -272,10 +271,10 @@ class HuffmanTree
     /**
      * Root of the HuffmanTree.
      */
-    TreeNode* root_;                            
+    TreeNode* root_;
 
     /**
      * Standard map that maps characters to their encoded values.
      */
-    std::map<char, std::vector<bool>> bitsMap_; 
+    std::map<char, std::vector<bool>> bitsMap_;
 };
