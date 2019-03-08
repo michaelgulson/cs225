@@ -13,7 +13,11 @@
 class Drawable
 {
   public:
+<<<<<<< HEAD
     ~Drawable()
+=======
+    virtual ~Drawable()
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
     { /* Nothing */
     }
 

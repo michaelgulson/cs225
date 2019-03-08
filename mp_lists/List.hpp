@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+#include <iostream>
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
 /**
  * @file list.cpp
  * Doubly Linked List (MP 3).
@@ -6,10 +11,19 @@
 template <class T>
 List<T>::List() {
   // @TODO: graded in MP3.1
+<<<<<<< HEAD
     ListNode* head_ = NULL;
     ListNode* tail_ = NULL;
 }
 
+=======
+    head_ = NULL;
+    tail_ = NULL;
+
+}
+
+
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
 /**
  * Returns a ListIterator with a position at the beginning of
  * the List.
@@ -26,7 +40,11 @@ typename List<T>::ListIterator List<T>::begin() const {
 template <typename T>
 typename List<T>::ListIterator List<T>::end() const {
   // @TODO: graded in MP3.1
+<<<<<<< HEAD
   return List<T>::ListIterator(tail_);
+=======
+  return List<T>::ListIterator(NULL);
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
 }
 
 
@@ -40,11 +58,19 @@ void List<T>::_destroy() {
   ListNode * curr;
   ListNode * nextNode;
   curr = head_;
+<<<<<<< HEAD
   do{
     nextNode=curr->next;
     delete curr;
     curr = nextNode;
   }while(curr->next!=0);
+=======
+  while(curr!=0){
+    nextNode=curr->next;
+    delete curr;
+    curr = nextNode;
+  }
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
 
 }
 
@@ -59,6 +85,7 @@ void List<T>::insertFront(T const & ndata) {
   /// @todo Graded in MP3.1
   ListNode * newNode = new ListNode(ndata);
   //newNode -> next = head_;
+<<<<<<< HEAD
   if (head_ != NULL) {
     newNode->next = head_;
     head_->prev = newNode;
@@ -67,6 +94,17 @@ void List<T>::insertFront(T const & ndata) {
     tail_ = head_;
   }
   head_ = newNode;
+=======
+  if(head_==NULL){
+    head_ = newNode;
+    tail_=newNode;
+  }
+  else {
+    newNode->next = head_;
+    head_->prev = newNode;
+    head_=newNode;
+  }
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
 
   length_++;
 
@@ -85,6 +123,7 @@ void List<T>::insertBack(const T & ndata) {
   //newNode -> next = head_;
   if(head_==NULL){
       head_= newNode;
+<<<<<<< HEAD
   }
   else if (tail_ != NULL) {
     newNode->prev = head_;
@@ -92,6 +131,16 @@ void List<T>::insertBack(const T & ndata) {
     tail_ = newNode;
   }
 
+=======
+      tail_= newNode;
+//      return;
+  }
+  else{
+    newNode->prev = tail_;
+    tail_->next = newNode;
+    tail_ = newNode;
+  }
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
   length_++;
 
 
@@ -116,6 +165,7 @@ void List<T>::insertBack(const T & ndata) {
 template <typename T>
 typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
   /// @todo Graded in MP3.1
+<<<<<<< HEAD
   ListNode * curr = start;
 
   for (int i = 0; i < splitPoint || curr != NULL; i++) {
@@ -123,13 +173,72 @@ typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
   }
 
   if (curr != NULL) {
+=======
+//  ListNode * curr = start;
+  //ListNode * returnSplit;
+  //ListNode * prevNode;
+  //int i=0;
+
+
+  ListNode * curr = start;
+  //return curr;
+  for (int i = 0; i < splitPoint && curr != NULL; i++) {
+    curr = curr->next;
+  }
+
+  if (curr != NULL && curr->prev!=NULL) {
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
       curr->prev->next = NULL;
       curr->prev = NULL;
   }
 
+<<<<<<< HEAD
   return NULL;
 }
 
+=======
+  return curr;
+
+
+  /*
+  //base cases
+  if(curr==NULL||splitPoint<=0){
+    return NULL;
+  }
+  //std::cout<< "curr->data"<< i<< ":"<<curr->data<< endl;
+  //traverse LL
+  for(int i=0; i<splitPoint&&curr!=NULL; i++){
+    curr = curr->next;
+    //std::cout<< "curr->data"<< i<< ":"<<curr->data<< endl;
+  }
+
+  //split (curr should be at the location of the start of the new list)
+  if (curr != NULL) {
+    if(curr->prev==NULL){
+      return curr;
+    }
+      returnSplit = curr;
+      prevNode = curr->prev;
+  //    std::cout<< "returnSplit->data"<< i<< ":"<<returnSplit->data<< endl;
+      //std::cout<< curr->prev->data<< endl;
+      //std::cout<< "curr->prev->next->"<< ":"<<curr->prev->next->data<< endl;
+      tail_= prevNode;
+//      std::cout<< "tail_= curr->prev"<< ":"<<tail_->data<< endl;
+
+//      curr->next = NULL;
+      prevNode->next =NULL;
+//std::cout<< "returnSplit->prev->data"<< ":"<<prevNode->data<< endl;
+      returnSplit->prev =NULL;
+
+      return returnSplit;
+  }
+  else{
+    return curr;
+  }*/
+}
+
+
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
 /**
  * Modifies the List using the waterfall algorithm.
  * Every other node (starting from the second one) is removed from the
@@ -142,6 +251,35 @@ typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
 template <typename T>
 void List<T>::waterfall() {
   /// @todo Graded in MP3.1
+<<<<<<< HEAD
+=======
+  //remove
+  ListNode * curr;
+  ListNode * backNode;
+  ListNode * prev;
+  curr = head_;
+  int i=0;
+  while(curr!=NULL&&curr!=tail_&&curr->prev!=NULL){
+    if(i%2==1){
+      //append to back
+      prev = curr->prev;
+      backNode= curr;
+      curr = curr->next;
+
+      curr->prev = prev;
+      prev->next = curr;
+      tail_->next=backNode;
+      backNode->prev =tail_;
+      tail_=backNode;
+    }
+    else{
+      curr = curr->next;
+    }
+    i++;
+  }
+  //append to back
+
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
 }
 
 /**
@@ -166,6 +304,13 @@ void List<T>::reverse() {
 template <typename T>
 void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.2
+<<<<<<< HEAD
+=======
+  /*ListNode * curr;
+  while(curr!=endpoint){
+
+  }*/
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
 }
 
 /**
@@ -218,7 +363,55 @@ void List<T>::mergeWith(List<T> & otherList) {
 template <typename T>
 typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) {
   /// @todo Graded in MP3.2
+<<<<<<< HEAD
   return NULL;
+=======
+  if(first==NULL){
+    return second;
+  }
+  if(second==NULL){
+    return first;
+  }
+  ListNode * prevFront;
+  ListNode * firstCurr = first;
+  ListNode * secondCurr = second;
+  ListNode * returnHead;
+  ListNode * next1;
+  ListNode * next2;
+
+  while(firstCurr!=NULL&& secondCurr!=NULL){
+    //connect previous value
+    if(firstCurr!=first){
+
+
+    }
+    next1=firstCurr->next;
+    next2=secondCurr->next;
+    if(firstCurr->data<secondCurr->data){
+      if(firstCurr==first){
+        returnHead=first;
+        //no need to connect previous value
+        prevFront= secondCurr;
+        continue;
+      }
+      firstCurr->next=secondCurr;
+      secondCurr->prev=firstCurr;
+    }
+    else{
+      if(secondCurr==second){
+        returnHead=second;
+        //no need to connect previous value
+        prevFront= firstCurr;
+      }
+      secondCurr->next=firstCurr;
+      firstCurr->prev=secondCurr;
+
+    }
+    firstCurr=next1;
+    secondCurr=next2;
+  }
+  return returnHead;
+>>>>>>> cd122e01498c9773db5cacc4d68d748b4e43f056
 }
 
 /**
