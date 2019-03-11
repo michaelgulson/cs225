@@ -76,6 +76,32 @@ template <class K, class V>
 void AVLTree<K, V>::rebalance(Node*& subtree)
 {
     // your code here
+    int balance;  //b=h(Tr)-h(Tl)
+    balance = subtree->right->height-subtree->left->height;
+    if(balance>=2){
+      //elbow check
+      if(subtree->right->right==NULL){
+        rotateRightLeft(subtree);
+      }
+      else{
+        rotateLeft(subtree);
+      }
+      subtree->height = subtree->left->height + subtree->right->height +1;
+
+    }
+    else if(balance<=-2){
+      //elbow check
+      if(subtree->left->left==NULL){
+        rotateLeftRight(subtree);
+      }
+      else{
+        rotateRight(subtree);
+      }
+      subtree->height = subtree->left->height + subtree->right->height +1;
+    }
+    else{
+      subtree->height = subtree->left->height + subtree->right->height +1;
+    }
 }
 
 template <class K, class V>
