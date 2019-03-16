@@ -29,10 +29,11 @@ public:
   class Iterator : std::iterator<std::forward_iterator_tag, Point> {
   public:
     Iterator();
-
+    Iterator(PNG png, Point start, double tolerance, ImageTraversal *traversal);
     Iterator & operator++();
     Point operator*();
     bool operator!=(const Iterator &other);
+    bool hasVisited(int x, int y);
 
     /** @todo [Part 1] */
     /** add member functions if neccesary*/
@@ -40,7 +41,18 @@ public:
   private:
     /** @todo [Part 1] */
     /** add private members here if neccesary*/
-
+    PNG _png;
+    Point _start;
+    double _tolerance;
+    Point _curr;
+    //Point _end;
+    //bool _isAtEnd;
+    //std::vector <int> * _visitedX;
+    //std::vector <int> * _visitedY;
+    int _visitedXYCount;
+    int * _visitedX;
+    int * _visitedY;
+    ImageTraversal * _traversal;
   };  
 
   /**
@@ -78,4 +90,6 @@ public:
 
 private:
   static double calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2);  
+
 };
+

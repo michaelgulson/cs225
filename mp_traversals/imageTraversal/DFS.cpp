@@ -24,6 +24,26 @@
  */
 DFS::DFS(const PNG & png, const Point & start, double tolerance) {  
   /** @todo [Part 1] */
+  
+  //ImageTraversal::Iterator Iter = new ImageTraversal::Iterator()
+  //Iter = begin();
+  //impliment in iterator unnecessary to do here
+  /*available indicates not in stack and 
+  if right pixel(x+1) available: add
+  else if below pixel(y+1) available: add
+  else if left pixel(x-1) available: add
+  else    above pixel(y-1) available: add
+  */
+  //while(Iter!= begin()){
+  //  Iter++;
+  //  add(Iter.point);
+  //}
+
+  _stack.push(start);
+  //_end = NULL;
+  _png = png;
+  _start = start;
+  _tolerance = tolerance;
 }
 
 /**
@@ -31,7 +51,9 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
  */
 ImageTraversal::Iterator DFS::begin() {
   /** @todo [Part 1] */
-  return ImageTraversal::Iterator();
+  DFS *imgTraversal = new DFS(_png, _start, _tolerance);
+  return ImageTraversal::Iterator(_png, _start, _tolerance, imgTraversal);
+  // return ImageTraversal::Iterator(_start);
 }
 
 /**
@@ -47,6 +69,7 @@ ImageTraversal::Iterator DFS::end() {
  */
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
+  _stack.push(point);
 }
 
 /**
@@ -54,7 +77,9 @@ void DFS::add(const Point & point) {
  */
 Point DFS::pop() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  Point pt = _stack.top();
+  _stack.pop();
+  return pt;
 }
 
 /**
@@ -62,7 +87,8 @@ Point DFS::pop() {
  */
 Point DFS::peek() const {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  Point pt = _stack.top();
+  return pt;
 }
 
 /**
@@ -70,5 +96,5 @@ Point DFS::peek() const {
  */
 bool DFS::empty() const {
   /** @todo [Part 1] */
-  return true;
+  return _stack.empty();
 }
