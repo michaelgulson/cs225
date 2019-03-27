@@ -325,14 +325,17 @@ class BTree
     bool is_valid(const BTreeNode* subroot, std::vector<DataPair>& data, unsigned int order) const;
 };
 
+
+//dumb question for TA, what does Key mean?
+/*
 template <class T, class C>
-C binary_search(const std::vector<T> &vec, const C left, const C right, const C &val)  //should left and right be references also correct return value?
+size_t binary_search(const std::vector<T> &vec, const C &left, const C &right, const C &val) //should left and right be references also correct return value?
 {
-    C middle = left + (right - left) / 2;  //is this the right declaration with template
+    size_t middle = left + (right - left) / 2;  //is this the right declaration with template
     if (right >= left)
     {
 
-        if (middle == val)
+        if (vec[middle] == val)
             return middle;
 
         if (vec[middle] > val)
@@ -340,9 +343,9 @@ C binary_search(const std::vector<T> &vec, const C left, const C right, const C 
 
         return binary_search(vec, middle + 1, right, val);
     }
-    return -1;
+    //return -1;
 }
-
+*/
 /**
  * Generalized function for finding the insertion index of a given element
  * into a given sorted vector.
@@ -358,8 +361,49 @@ C binary_search(const std::vector<T> &vec, const C left, const C right, const C 
 template <class T, class C>
 size_t insertion_idx(const std::vector<T>& elements, const C& val)
 {
+    size_t left, right, middle;
+
+    if(elements.size()==0){
+        return 0;
+    }
+    if(val > elements.at(elements.size()-1)){
+        return elements.size()-1;
+    }
+    if(val< elements.at(0)){
+        return 0;
+    }
+    
     /* TODO Your code goes here! */
-    return (size_t)binary_search(elements, elements[0], elements[elements.size()-1], val);
+    left=0;
+    right = elements.size()-1;
+    //make iterative binary search
+    //error here invalid operands to binary expression Datapair and int .value problem?  Should it be .Key maybe
+    while((left < right)){ /*&& (val >= elements[left]) && (val <= elements[right])*/
+        //middle = (left+right) / 2; //is this the right declaration with template
+        //if (left<=right)
+        //{
+            middle = left + (right-left) / 2;
+            if (elements.at(middle) == val)
+            {
+                //middle = (left-right)/2;
+                return middle; //return middle
+            }
+            if (elements.at(middle) < val){
+                left = middle + 1;
+            }
+                //return binary_search(vec, left, middle - 1, val);
+                //
+            else{
+                right = middle - 1;
+            }
+        //}
+        if(left<0 || right>elements.size()){
+            break;
+        }
+    }
+
+    return middle;  //elements[i]->V? or just elements[i]
+    //return binary_search(elements, elements[0], elements[elements.size()-1], val);  //elements[i]->V? or just elements[i]
 }
 
 

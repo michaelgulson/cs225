@@ -29,18 +29,23 @@ V BTree<K, V>::find(const BTreeNode* subroot, const K& key) const
 
     size_t first_larger_idx = insertion_idx(subroot->elements, key);
 
+
+    //
+
     //insertion_idx fail
-    if (first_larger_idx == -1)
+    /*if (first_larger_idx == -1)
     {
         return V();
     }
-
+    */
     /* If first_larger_idx is a valid index and the key there is the key we
      * are looking for, we are done. */
-    if (subroot->elements[first_larger_idx] == key)
-    {
-        return subroot->elements[first_larger_idx]; //is this right
-    }
+
+    //if(first_larger_idx<= subroot->elements.size()){
+        if (subroot->elements[first_larger_idx].key == key)
+        {
+            return subroot->elements[first_larger_idx].value; //is this right
+        }
 
         /* Otherwise, we need to figure out which child to explore. For this we
      * can actually just use first_larger_idx directly. E.g.
@@ -52,6 +57,18 @@ V BTree<K, V>::find(const BTreeNode* subroot, const K& key) const
      * a leaf and we didn't find the key in it, then we have failed to find it
      * anywhere in the tree and return the default V.
      */
+
+        if(!subroot->is_leaf){
+            /*if(subroot->children[first_larger_idx]->is_leaf=true){
+             return V();
+         }*/
+        
+         return find(subroot->children[first_larger_idx], key);
+        }
+     //   }
+    
+
+ 
 
         return V();
 }
@@ -151,7 +168,14 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
 
 
     /* TODO Your code goes here! */
+    //Insert the mid element from the child into its new position in the
+    //    *parent's elements. At this point the median is still in the child.
+    //new_right = elem_itr;
+
+
 }
+
+
 
 /**
  * Private recursive version of the insert function.
