@@ -33,11 +33,19 @@ void AVLTree<K, V>::rotateLeft(Node*& t)
     Node * y =t->right;
     t->right = y->left;
     y->left = t;
+    y->height = heightOrNeg1(y->left) + heightOrNeg1(y->right) +1;
+
+    t = y;
     //update height
     //H = HL+HR+!
     t->height = t->left->height + t->right->height +1;
-    y->height = y->left->height + y->right->height +1;
+
+
+    t->height = heightOrNeg1(t->left) + heightOrNeg1(t->right) +1;
+
 }
+
+
 
 template <class K, class V>
 void AVLTree<K, V>::rotateLeftRight(Node*& t)
@@ -56,10 +64,11 @@ void AVLTree<K, V>::rotateRight(Node*& t)
     Node * y =t->left;
     t->left = y->right;
     y->right = t;
+    y->height = heightOrNeg1(y->left) + heightOrNeg1(y->right) +1;
+    t = y;
     //update height
     //H = HL+HR+!
-    t->height = t->left->height + t->right->height +1;
-    y->height = y->left->height + y->right->height +1;
+    t->height = heightOrNeg1(t->left) + heightOrNeg1(t->right) +1;
 
 }
 

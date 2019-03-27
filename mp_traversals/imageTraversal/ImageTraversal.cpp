@@ -12,10 +12,9 @@ bool ImageTraversal::Iterator::hasVisited(int x, int y)
 {
   for ( int i = 0; i < _visitedXYCount; i++)
   {
-
-      if(_visitedX[i]==x&&_visitedY[i]==y){
-        return true;
-      }
+    if(_visitedX[i]==x&&_visitedY[i]==y){
+       return true;
+    }
 
   }
   return false;

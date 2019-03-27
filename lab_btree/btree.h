@@ -322,9 +322,26 @@ class BTree
      * validity.
      * @return true if the node's subtree is valid, false otherwise.
      */
-    bool is_valid(const BTreeNode* subroot, std::vector<DataPair>& data,
-                  unsigned int order) const;
+    bool is_valid(const BTreeNode* subroot, std::vector<DataPair>& data, unsigned int order) const;
 };
+
+template <class T, class C>
+C binary_search(const std::vector<T> &vec, const C left, const C right, const C &val)  //should left and right be references also correct return value?
+{
+    C middle = left + (right - left) / 2;  //is this the right declaration with template
+    if (right >= left)
+    {
+
+        if (middle == val)
+            return middle;
+
+        if (vec[middle] > val)
+            return binary_search(vec, left, middle - 1, val);
+
+        return binary_search(vec, middle + 1, right, val);
+    }
+    return -1;
+}
 
 /**
  * Generalized function for finding the insertion index of a given element
@@ -342,9 +359,9 @@ template <class T, class C>
 size_t insertion_idx(const std::vector<T>& elements, const C& val)
 {
     /* TODO Your code goes here! */
-
-    return 5;
+    return (size_t)binary_search(elements, elements[0], elements[elements.size()-1], val);
 }
+
 
 #include "btree_given.cpp"
 #include "btree.cpp"

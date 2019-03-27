@@ -29,10 +29,20 @@ V BTree<K, V>::find(const BTreeNode* subroot, const K& key) const
 
     size_t first_larger_idx = insertion_idx(subroot->elements, key);
 
+    //insertion_idx fail
+    if (first_larger_idx == -1)
+    {
+        return V();
+    }
+
     /* If first_larger_idx is a valid index and the key there is the key we
      * are looking for, we are done. */
+    if (subroot->elements[first_larger_idx] == key)
+    {
+        return subroot->elements[first_larger_idx]; //is this right
+    }
 
-    /* Otherwise, we need to figure out which child to explore. For this we
+        /* Otherwise, we need to figure out which child to explore. For this we
      * can actually just use first_larger_idx directly. E.g.
      * | 1 | 5 | 7 | 8 |
      * Suppose we are looking for 6. first_larger_idx is 2. This means we want to
@@ -43,7 +53,7 @@ V BTree<K, V>::find(const BTreeNode* subroot, const K& key) const
      * anywhere in the tree and return the default V.
      */
 
-    return V();
+        return V();
 }
 
 /**
