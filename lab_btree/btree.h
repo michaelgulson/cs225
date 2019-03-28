@@ -367,7 +367,7 @@ size_t insertion_idx(const std::vector<T>& elements, const C& val)
         return 0;
     }
     if(val > elements.at(elements.size()-1)){
-        return elements.size()-1;
+        return elements.size();
     }
     if(val< elements.at(0)){
         return 0;
@@ -378,7 +378,8 @@ size_t insertion_idx(const std::vector<T>& elements, const C& val)
     right = elements.size()-1;
     //make iterative binary search
     //error here invalid operands to binary expression Datapair and int .value problem?  Should it be .Key maybe
-    while((left < right)){ /*&& (val >= elements[left]) && (val <= elements[right])*/
+    while(left <= right ){
+        /*&& (val >= elements[left]) && (val <= elements[right]))){ && (val >= elements[left]) && (val <= elements[right])*/
         //middle = (left+right) / 2; //is this the right declaration with template
         //if (left<=right)
         //{

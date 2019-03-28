@@ -168,11 +168,34 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
 
 
     /* TODO Your code goes here! */
-    //Insert the mid element from the child into its new position in the
-    //    *parent's elements. At this point the median is still in the child.
-    //new_right = elem_itr;
+/*
+    //new_right
+    //parent->elements.push_back(parent->elements[elem_itr]->child)
 
+    //add node to parent's vector
+    //USE ELEM_ITR
+    //Insert a pointer into parent's children which will point to the
+    //new right node.The new right node is empty at this point.
 
+    //add node to parent's elements which is the child 
+    parent->elements.insert(elem_itr, child->elements[mid_elem_idx]);
+    parent->children->elements.insert(child_itr, )          //insert pointer where you want new child?
+    //set new element in parent's elements to new_right ptr
+    //parent->elements[elem_itr]->children = new_right;
+    //parent->elements[child_idx]->children = new_right;
+
+    //fill new_right with child[mid+1-end]
+    //new_right->elements = parent->children->elements.assign(child->elements[mid_elem_itr + 1], child->elements.end());
+    new_right->elements.assign(mid_elem_itr + 1, child->elements.end());
+    new_right->children->elements.assign(mid_child_itr, child->children.end());
+
+    //fill new_left
+    new_left->elements.assign(child->elements.begin(), mid_elem_itr);
+    new_left->children->elements.assign(child->children.begin(), mid_child_itr);
+    
+    //parents->elements[elem_itr]->children =
+    //split child uses usert
+*/
 }
 
 
@@ -199,4 +222,11 @@ void BTree<K, V>::insert(BTreeNode* subroot, const DataPair& pair)
     size_t first_larger_idx = insertion_idx(subroot->elements, pair);
 
     /* TODO Your code goes here! */
+
+    //binary search on current node
+    //if it exists there's no more work to be done, no insertion necessary
+
+    //
+
+
 }
