@@ -279,12 +279,63 @@ void LPHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
-    //same code as schashtable resizeTable()
-
+    /*      //schashtable resizeTable()
+  
     size_t newTableSizePrime;
     //table_size = tableSize();
     newTableSizePrime = findPrime(size * 2);
     //table->resize(newTableSizePrime);
+    //CA says make a new table?
+    std::list<std::pair<K, V>> *copyTable = new std::list<std::pair<K, V>>[size];
+
+    copyTable = table;
+    //mallocate() memory for table
+    table = new std::list<std::pair<K, V>>[newTableSizePrime];
+
+    //rehash key values
+    unsigned hashIndex;
+
+    //hashIndex = hashes::hash(key, size);
+
+    for (size_t i = 0; i < size; i++)
+    {
+        typename std::list<std::pair<K, V>>::iterator it;
+        //??there's a compiler error on this line
+        for (it = table[i].begin(); it != table[i].end(); it++)
+        {
+            hashIndex = hashes::hash((*it).first, newTableSizePrime);
+            table[hashIndex].insert(table[hashIndex].begin(), *it);
+        }
+    }
+
+    //hash(key);
+    //delete and replace old table
+    delete[] copyTable;
+
+    size = newTableSizePrime;
     //??? how does this look ^
+    */
+
+    size_t newTableSizePrime;
+    //table_size = tableSize();
+    newTableSizePrime = findPrime(size * 2);
+    
+    //create copy table
+    std::pair<K, V> ** copyTable = new std::pair<K, V> *[size];
+
+    copyTable = table;
+    //mallocate() memory for table
+    table = new std::pair<K, V> *[newTableSizePrime];
+
+    //rehash key values
+    unsigned hashIndex;
+
+    for (size_t i = 0; i < size; i++)
+    {
+        hashIndex = hashes::hash((*copyTable[i]).first, newTableSizePrime);
+        *table[hashIndex] = *copyTable[i];
+    }
+
+    delete[] copyTable;
     size = newTableSizePrime;
 }

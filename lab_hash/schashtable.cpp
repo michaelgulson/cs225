@@ -59,8 +59,8 @@ void SCHashTable<K, V>::insert(K const& key, V const& value)
     }
     double newLoadFactor;
     newLoadFactor = (elems + 1) / size;
-
-    if(newLoadFactor >= .7){
+    elems++;
+    if(shouldResize()){
         resizeTable();
     }
 
@@ -84,7 +84,7 @@ void SCHashTable<K, V>::insert(K const& key, V const& value)
 
 
     //increase elems private member
-    elems++;
+    //elems++;
 
     /*while (it != end())
         { //
@@ -131,6 +131,7 @@ void SCHashTable<K, V>::remove(K const& key)
         for (it = table[i].begin(); it != table[i].end(); it++){
             if ((*(it)).first == key) {
                 table[i].erase(it);
+                elems--;
                 return;
             }
         }
@@ -140,7 +141,6 @@ void SCHashTable<K, V>::remove(K const& key)
             it++;
         }*/
     }
-    elems--;
     //(void) key; // prevent warnings... When you implement this function, remove this line.
 }
 
@@ -251,10 +251,40 @@ void SCHashTable<K, V>::resizeTable()
     newTableSizePrime = findPrime(size * 2);
     //table->resize(newTableSizePrime);
     //CA says make a new table?
-    table = new std::list<std::pair<K, V>>[newTableSizePrime];
-    //mallocate() memory for table
-    //rehash key values
-    //delete and replace old table
+    std::list<std::pair<K, V>> * copyTable = new std::list<std::pair<K, V>>[size];
 
+    copyTable = table;
+    //mallocate() memory for table
+    table = new std::list<std::pair<K, V>>[newTableSizePrime];
+
+    //rehash key values
+    unsigned hashIndex;
+
+    //hashIndex = hashes::hash(key, size);
+
+    for (size_t i = 0; i < size; i++)
+    {
+        typename std::list<std::pair<K, V>>::iterator it;
+        //??there's a compiler error on this line
+        for (it = copyTable[i].begin(); it != copyTable[i].end(); it++)
+        {
+            /*if ((*(it)).first == key)
+            {
+                table[i].erase(it);
+                elems--;
+                return;
+            }*/
+            hashIndex = hashes::hash((*it).first, newTableSizePrime);
+
+            table[hashIndex].insert(table[hashIndex].begin(), *it);
+            //???does this insert an element to front of linked list 
+        }
+    }
+
+    //hash(key);
+    //delete and replace old table
+    delete [] copyTable;
+
+    size =newTableSizePrime;
     //??? how does this look ^
 }
