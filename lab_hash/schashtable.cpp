@@ -53,6 +53,10 @@ void SCHashTable<K, V>::insert(K const& key, V const& value)
      * @todo Implement this function.
      *
      */
+    //null check
+    if(key == K() && value ==V()){
+        return;
+    }
     double newLoadFactor;
     newLoadFactor = (elems + 1) / size;
 
@@ -247,10 +251,10 @@ void SCHashTable<K, V>::resizeTable()
     newTableSizePrime = findPrime(size * 2);
     //table->resize(newTableSizePrime);
     //CA says make a new table?
+    table = new std::list<std::pair<K, V>>[newTableSizePrime];
     //mallocate() memory for table
     //rehash key values
     //delete and replace old table
-    
+
     //??? how does this look ^
-    size = newTableSizePrime;
 }
