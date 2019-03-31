@@ -3,6 +3,7 @@
  * Implementation of the LPHashTable class.
  */
 #include "lphashtable.h"
+#include <list>
 
 template <class K, class V>
 LPHashTable<K, V>::LPHashTable(size_t tsize)
@@ -71,7 +72,6 @@ LPHashTable<K, V>::LPHashTable(LPHashTable<K, V> const& other)
 template <class K, class V>
 void LPHashTable<K, V>::insert(K const& key, V const& value)
 {
-
     /**
      * @todo Implement this function.
      *
@@ -80,8 +80,64 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
      * Also, don't forget to mark the cell for probing with should_probe!
      */
 
-    (void) key;   // prevent warnings... When you implement this function, remove this line.
-    (void) value; // prevent warnings... When you implement this function, remove this line.
+    /*schashtable insert
+   double newLoadFactor;
+    newLoadFactor = (elems + 1) / size;
+
+    if(newLoadFactor >= .7){
+        resizeTable();
+    }
+
+    unsigned hashIndex;
+    std::pair<K,V> hashInsert = std::make_pair(key,value);
+
+    hashIndex = hashes::hash(key, size);
+
+    //you don't need to concern yourself with duplicate keys
+    //if (keyExists(key)){           //No
+    //    return; //key already exists in hashtable?
+    //}
+
+    //typename std::list<std::pair<K, V>>::iterator bucket_iterator;
+    typename std::list<std::pair<K, V>>::iterator it = table[hashIndex].begin();
+
+    //insert element into linked list
+    table[hashIndex].insert(it, hashInsert);
+
+    //increase elems private member
+    elems++;
+
+    */
+    double newLoadFactor;
+    newLoadFactor = (elems + 1) / size;
+
+    if (newLoadFactor >= .7)
+    {
+        resizeTable();
+    }
+
+    unsigned hashIndex;
+    std::pair<K, V> hashInsert = std::make_pair(key, value);
+
+    //find available space through linear probing Hash Table
+    hashIndex = hash(key, size);
+   
+    //??? Is this how we should use should_probe?
+    while(!should_probe(hashIndex)){
+        hashIndex++;
+        hashIndex %= size;
+    }
+
+    typename std::list<std::pair<K, V>>::iterator it = table[hashIndex].begin();
+
+    //insert element into linked list
+    table[hashIndex].insert(it, hashInsert);
+
+    //increase elems private member
+    elems++;
+
+    //(void) key;   // prevent warnings... When you implement this function, remove this line.
+    //(void) value; // prevent warnings... When you implement this function, remove this line.
 }
 
 template <class K, class V>
@@ -90,6 +146,8 @@ void LPHashTable<K, V>::remove(K const& key)
     /**
      * @todo: implement this function
      */
+
+
 }
 
 template <class K, class V>
@@ -159,4 +217,12 @@ void LPHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
+    //same code as schashtable resizeTable()
+
+    size_t newTableSizePrime;
+    //table_size = tableSize();
+    newTableSizePrime = findPrime(size * 2);
+    table->resize(newTableSizePrime);
+    //??? how does this look ^
+    size = newTableSizePrime;
 }

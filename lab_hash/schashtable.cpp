@@ -49,33 +49,137 @@ SCHashTable<K, V>::SCHashTable(SCHashTable<K, V> const& other)
 template <class K, class V>
 void SCHashTable<K, V>::insert(K const& key, V const& value)
 {
-
     /**
      * @todo Implement this function.
      *
      */
+    double newLoadFactor;
+    newLoadFactor = (elems + 1) / size;
+
+    if(newLoadFactor >= .7){
+        resizeTable();
+    }
+
+    unsigned hashIndex;
+    std::pair<K,V> hashInsert = std::make_pair(key,value);
+
+    hashIndex = hashes::hash(key, size);
+
+    //you don't need to concern yourself with duplicate keys
+    /*if (keyExists(key)){           //No
+        return; //key already exists in hashtable?
+    }*/
+
+    //typename std::list<std::pair<K, V>>::iterator bucket_iterator;
+    typename std::list<std::pair<K, V>>::iterator it = table[hashIndex].begin();
+
+
+
+    //insert element into linked list
+    table[hashIndex].insert(it, hashInsert);
+
+    //increase elems private member
+    elems++;
+
+    /*while (it != end())
+        { //
+            //std::pair<K, V> &operator*
+            if ((*(curr).K == K()) && (*(curr).V == V()))
+            {
+                *(curr).K = key;
+                *(curr).V = value;
+                break; //insert into empty location???
+            }
+            curr++
+        }
+    }*/
+
+    //is this preferable ^ to below
+    //HashTable<K, V>::iterator curr;
+
+    //curr = begin();
 }
 
 template <class K, class V>
 void SCHashTable<K, V>::remove(K const& key)
 {
-    typename std::list<std::pair<K, V>>::iterator it;
+    //size_t table_size;
+    //typename std::list<std::pair<K, V>>::iterator it;
+    //??? should we be using this ^
     /**
      * @todo Implement this function.
      *
      * Please read the note in the lab spec about list iterators and the
      * erase() function on std::list!
      */
-    (void) key; // prevent warnings... When you implement this function, remove this line.
+    //for typename list< pair<K,V> >::iterator it = table[i].begin(); <- this class
+    //does it++ iterate through the different list entries and pairs in each list and abstact that
+    //or do we need to do that
+
+    //do we need multiple list iterators
+    //table_size = tableSize();
+    for (size_t i = 0; i < size; i++)
+    {
+        typename std::list<std::pair<K, V>>::iterator it = table[i].begin();
+    
+        //??there's a compiler error on this line
+        for (it = table[i].begin(); it != table[i].end(); it++){
+            if ((*(it)).first == key) {
+                table[i].erase(it);
+                return;
+            }
+        }
+        /*while (it != end()){ //
+            //std::pair<K, V> &operator*
+            
+            it++;
+        }*/
+    }
+    elems--;
+    //(void) key; // prevent warnings... When you implement this function, remove this line.
 }
 
 template <class K, class V>
 V SCHashTable<K, V>::find(K const& key) const
 {
+    //typename std::list<std::pair<K, V>>::iterator it;
+    //??? is this necessary ^
+
+    //size_t table_size;
 
     /**
      * @todo: Implement this function.
      */
+    //table_size = tableSize();
+    for (size_t i = 0; i < size; i++)
+    {
+        typename std::list<std::pair<K, V>>::iterator it = table[i].begin();
+
+        //??there's a compiler error on this line
+        for (it = table[i].begin(); it != table[i].end(); it++)
+        {
+            if ((*(it)).first == key)
+            {
+                return (*it).second;
+            }
+        }
+        /*while (it != end()){ //
+            //std::pair<K, V> &operator*
+            
+            it++;
+        }*/
+    }
+
+    /*while (it != end()){ //
+        //std::pair<K, V> &operator*
+        if ((*(it).K == key))
+        {
+            (*(it).K) = K();
+            return *(it).V;
+        }
+        it++
+    }
+    */
 
     return V();
 }
@@ -134,4 +238,11 @@ void SCHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
+
+    size_t newTableSizePrime;
+    //table_size = tableSize();
+    newTableSizePrime = findPrime(size * 2);
+    table->resize(newTableSizePrime);
+    //??? how does this look ^
+    size = newTableSizePrime;
 }
