@@ -78,6 +78,7 @@ void SCHashTable<K, V>::insert(K const& key, V const& value)
     //insert element into linked list
     table[hashIndex].insert(it, hashInsert);
 
+
     //increase elems private member
     elems++;
 
@@ -120,7 +121,7 @@ void SCHashTable<K, V>::remove(K const& key)
     //table_size = tableSize();
     for (size_t i = 0; i < size; i++)
     {
-        typename std::list<std::pair<K, V>>::iterator it = table[i].begin();
+        typename std::list<std::pair<K, V>>::iterator it;
     
         //??there's a compiler error on this line
         for (it = table[i].begin(); it != table[i].end(); it++){
@@ -153,7 +154,9 @@ V SCHashTable<K, V>::find(K const& key) const
     //table_size = tableSize();
     for (size_t i = 0; i < size; i++)
     {
-        typename std::list<std::pair<K, V>>::iterator it = table[i].begin();
+        //typename std::list<std::pair<K, V>>::iterator it = table[i].begin();
+        typename std::list<std::pair<K, V>>::iterator it;
+        // = table[i].begin();
 
         //??there's a compiler error on this line
         for (it = table[i].begin(); it != table[i].end(); it++)
@@ -242,7 +245,12 @@ void SCHashTable<K, V>::resizeTable()
     size_t newTableSizePrime;
     //table_size = tableSize();
     newTableSizePrime = findPrime(size * 2);
-    table->resize(newTableSizePrime);
+    //table->resize(newTableSizePrime);
+    //CA says make a new table?
+    //mallocate() memory for table
+    //rehash key values
+    //delete and replace old table
+    
     //??? how does this look ^
     size = newTableSizePrime;
 }

@@ -117,21 +117,25 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
     }
 
     unsigned hashIndex;
-    std::pair<K, V> hashInsert = std::make_pair(key, value);
+    //hashInsert = new
+    std::pair<K, V> * hashInsert;
+    //hashInsert = new std::pair<K, V>::make_pair(key, value);
+    //hashInsert = new std::pair<K, V>::pair(key, value);
+    hashInsert = new std::pair<K, V>(key, value);
 
     //find available space through linear probing Hash Table
-    hashIndex = hash(key, size);
-   
+    hashIndex = hashes::hash(key, size);
+
     //??? Is this how we should use should_probe?
-    while(!should_probe(hashIndex)){
+    while(should_probe[hashIndex]){
         hashIndex++;
         hashIndex %= size;
     }
 
-    typename std::list<std::pair<K, V>>::iterator it = table[hashIndex].begin();
+    //typename std::pair<K, V>>::iterator it;
 
     //insert element into linked list
-    table[hashIndex].insert(it, hashInsert);
+    table[hashIndex] = hashInsert;
 
     //increase elems private member
     elems++;
@@ -147,7 +151,57 @@ void LPHashTable<K, V>::remove(K const& key)
      * @todo: implement this function
      */
 
+    /*
+    REMOVE FOR SCHASHTABLE
+    for (size_t i = 0; i < size; i++)
+    {
+        typename std::list<std::pair<K, V>>::iterator it = table[i].begin();
 
+        //??there's a compiler error on this line
+        for (it = table[i].begin(); it != table[i].end(); it++)
+        {
+            if ((*(it)).first == key)
+            {
+                table[i].erase(it);
+                return;
+            }
+        }
+        //while (it != end()){ //
+            //std::pair<K, V> &operator*
+            
+        //    it++;
+        //}
+    }
+    elems--;
+    */
+    //for (size_t i = 0; i < size; i++)
+    //{
+        //typename std::list<std::pair<K, V>>::iterator it = table[i].begin();
+
+        //??there's a compiler error on this line
+        //for (it = table[i].begin(); it != table[i].end(); it++)
+        //{
+    /*    if(size==0){
+            return;
+        }
+        for (int i=0; i< size; i+)
+        {    
+            if (table[i].first == key)
+            {
+                //???is this right?
+                table[i].first = K();
+                tabl
+                return;
+            }
+        }
+        //while (it != end()){ //
+        //std::pair<K, V> &operator*
+
+        //    it++;
+        //}
+    }
+    elems--;
+    */
 }
 
 template <class K, class V>
@@ -159,6 +213,14 @@ int LPHashTable<K, V>::findIndex(const K& key) const
      *
      * Be careful in determining when the key is not in the table!
      */
+    for (size_t i = 0; i < size; i ++)
+    {
+        if (table[i]->first == key)
+        {
+            //???is this right?
+            return i;
+        }
+    }
 
     return -1;
 }
@@ -222,7 +284,7 @@ void LPHashTable<K, V>::resizeTable()
     size_t newTableSizePrime;
     //table_size = tableSize();
     newTableSizePrime = findPrime(size * 2);
-    table->resize(newTableSizePrime);
+    //table->resize(newTableSizePrime);
     //??? how does this look ^
     size = newTableSizePrime;
 }

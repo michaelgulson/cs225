@@ -1,0 +1,3 @@
+Partners for lab_hash
+mgulson2, Michael Gulson
+tdh3, Tyler Hickerson
