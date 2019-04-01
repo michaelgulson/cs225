@@ -161,7 +161,7 @@ void LPHashTable<K, V>::remove(K const& key)
 
     for (size_t i = 0; i < size; i++)
     {
-        if (should_probe)
+        if (should_probe[i] && table[i]!=NULL)
         {
 
             if (table[i]->first == key)
@@ -185,7 +185,7 @@ int LPHashTable<K, V>::findIndex(const K& key) const
      */
 
     //most efficient way to find key
-    unsigned hashIndex;
+    /*unsigned hashIndex;
     hashIndex = hashes::hash(key, size);
 
     for (size_t i = 0; i < size; i ++)
@@ -194,6 +194,20 @@ int LPHashTable<K, V>::findIndex(const K& key) const
         if (should_probe[(hashIndex + i) % size])
         {
             if (table[(hashIndex+i)%size]->first == key)
+            {
+                //???is this right?
+                return (hashIndex+i)%size;
+            }
+        }
+    }
+    */
+
+    for (size_t i = 0; i < size; i++)
+    {
+        //segfaults here if table[i] is null
+        if (should_probe[i] && table[i] != NULL)
+        {
+            if (table[i]->first == key)
             {
                 //???is this right?
                 return i;
@@ -325,7 +339,8 @@ void LPHashTable<K, V>::resizeTable()
     for (size_t i = 0; i < size; i++)
     {
         //no need to rehash empty bins
-        if(!should_probe_original[i]){
+        if (!should_probe_original[i] || originalTable[i] == NULL)
+        {
             continue;
         }
         for (size_t j = 0; j < newTableSizePrime; j++){
