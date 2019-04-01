@@ -327,25 +327,8 @@ class BTree
 
 
 //dumb question for TA, what does Key mean?
-/*
-template <class T, class C>
-size_t binary_search(const std::vector<T> &vec, const C &left, const C &right, const C &val) //should left and right be references also correct return value?
-{
-    size_t middle = left + (right - left) / 2;  //is this the right declaration with template
-    if (right >= left)
-    {
 
-        if (vec[middle] == val)
-            return middle;
 
-        if (vec[middle] > val)
-            return binary_search(vec, left, middle - 1, val);
-
-        return binary_search(vec, middle + 1, right, val);
-    }
-    //return -1;
-}
-*/
 /**
  * Generalized function for finding the insertion index of a given element
  * into a given sorted vector.

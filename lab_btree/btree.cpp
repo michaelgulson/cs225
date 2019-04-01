@@ -168,7 +168,7 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
 
 
     /* TODO Your code goes here! */
-/*
+
     //new_right
     //parent->elements.push_back(parent->elements[elem_itr]->child)
 
@@ -177,25 +177,35 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
     //Insert a pointer into parent's children which will point to the
     //new right node.The new right node is empty at this point.
 
+
+
+
     //add node to parent's elements which is the child 
     parent->elements.insert(elem_itr, child->elements[mid_elem_idx]);
-    parent->children->elements.insert(child_itr, )          //insert pointer where you want new child?
+    
     //set new element in parent's elements to new_right ptr
     //parent->elements[elem_itr]->children = new_right;
     //parent->elements[child_idx]->children = new_right;
 
     //fill new_right with child[mid+1-end]
     //new_right->elements = parent->children->elements.assign(child->elements[mid_elem_itr + 1], child->elements.end());
-    new_right->elements.assign(mid_elem_itr + 1, child->elements.end());
-    new_right->children->elements.assign(mid_child_itr, child->children.end());
+    new_right->elements.assign( mid_elem_itr + 1,  child->elements.end());
+    
+    if(!(new_right->is_leaf)){
+        new_right->children.assign( mid_child_itr +1 ,  child->children.end());
+    }
+    parent->children.insert(child_itr, new_right); //insert pointer where you want new child?
+
 
     //fill new_left
-    new_left->elements.assign(child->elements.begin(), mid_elem_itr);
-    new_left->children->elements.assign(child->children.begin(), mid_child_itr);
+    new_left->elements.assign( child->elements.begin(),  mid_elem_itr);
     
+    if(!(new_left->is_leaf)){
+        new_left->children.assign( child->children.begin(),  mid_child_itr+1);
+    }
     //parents->elements[elem_itr]->children =
     //split child uses usert
-*/
+
 }
 
 
@@ -226,7 +236,26 @@ void BTree<K, V>::insert(BTreeNode* subroot, const DataPair& pair)
     //binary search on current node
     //if it exists there's no more work to be done, no insertion necessary
 
-    //
-
+    if(first_larger_idx > subroot->elements.size()){
+        return;
+    }
+    if(subroot->is_leaf){
+        if (subroot->elements.at(first_larger_idx).key == pair.key){
+            return;
+        }
+        subroot->elements.insert(subroot->elements.begin() + first_larger_idx, pair);
+    }
+    else if(subroot->elements.empty()){
+        BTreeNode *newNode = subroot->children[first_larger_idx];
+        insert(newNode, pair);
+        return;
+    }
+    else{
+        BTreeNode *newNode = subroot->children[first_larger_idx];
+        insert(newNode, pair);
+        if(newNode->elements.size() >= order){
+            split_child(subroot, first_larger_idx);
+        }
+    }
 
 }

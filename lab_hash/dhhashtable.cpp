@@ -81,7 +81,24 @@ void DHHashTable<K, V>::insert(K const& key, V const& value)
      *  forget to mark the cell for probing with should_probe!
      */
 
-    (void) key;   // prevent warnings... When you implement this function, remove this line.
+    //resize if necessary
+    elems++;
+    if (shouldResize())
+    {
+        resizeTable();
+    }
+
+    unsigned hashIndex1, hashIndex2;
+    std::pair<K, V> hashInsert = std::make_pair(key, value);
+
+    //first hash
+    
+    hashIndex1 = hashes::hash(key, size);
+
+    //secondary_hash
+    hashIndex2 = hashes::secondary_hash(key,size);
+
+    //(void) key; // prevent warnings... When you implement this function, remove this line.
     (void) value; // prevent warnings... When you implement this function, remove this line.
 }
 

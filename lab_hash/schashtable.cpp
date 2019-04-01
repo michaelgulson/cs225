@@ -53,12 +53,12 @@ void SCHashTable<K, V>::insert(K const& key, V const& value)
      * @todo Implement this function.
      *
      */
-    //null check
+    //???null check do we need this???
     if(key == K() && value ==V()){
         return;
     }
-    double newLoadFactor;
-    newLoadFactor = (elems + 1) / size;
+    // double newLoadFactor;
+    // newLoadFactor = (elems + 1) / size;
     elems++;
     if(shouldResize()){
         resizeTable();
