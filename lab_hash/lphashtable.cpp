@@ -108,10 +108,10 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
     elems++;
 
     */
-    double newLoadFactor;
-    newLoadFactor = (elems + 1) / size;
-
-    if (newLoadFactor >= .7)
+    //double newLoadFactor;
+    //newLoadFactor = (elems + 1) / size;
+    elems++;
+    if (shouldResize())
     {
         resizeTable();
     }
@@ -141,9 +141,7 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
     //insert element into linked list
     table[hashIndex] = hashInsert;
 
-    //increase elems private member
-    elems++;
-
+    
     //change should probe value at hashIndex
     should_probe[hashIndex] = true;
 
