@@ -166,7 +166,9 @@ void LPHashTable<K, V>::remove(K const& key)
 
             if (table[i]->first == key)
             {
-                table[i] = empty;
+               // table[i] = empty;
+               delete table[i];
+               table[i] = NULL;
                 elems--;
                 return;
             }
@@ -309,6 +311,7 @@ void LPHashTable<K, V>::resizeTable()
     //??? how does this look ^
     */
 
+    /*Michael Gulson implimentation
     size_t newTableSizePrime;
     //table_size = tableSize();
     newTableSizePrime = findPrime(size * 2);
@@ -362,4 +365,35 @@ void LPHashTable<K, V>::resizeTable()
 
     delete[] originalTable;
     size = newTableSizePrime;
+    */
+
+    size_t newSize = findPrime(size * 2);
+    std::pair<K, V> **temp = new std::pair<K, V> *[newSize];
+    delete[] should_probe;
+    should_probe = new bool[newSize];
+    for (size_t i = 0; i < newSize; i++)
+    {
+        temp[i] = NULL;
+        should_probe[i] = false;
+    }
+
+    for (size_t slot = 0; slot < size; slot++)
+    {
+        if (table[slot] != NULL)
+        {
+            size_t idx = hashes::hash(table[slot]->first, newSize);
+       
+            while (temp[idx] != NULL)
+            {
+                idx = (idx+1) % newSize;
+            }
+            temp[idx] = table[slot];
+            should_probe[idx] = true;
+        }
+    }
+
+    delete[] table;
+    // don't delete elements since we just moved their pointers around
+    table = temp;
+    size = newSize;
 }
