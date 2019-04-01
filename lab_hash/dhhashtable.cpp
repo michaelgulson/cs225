@@ -88,8 +88,10 @@ void DHHashTable<K, V>::insert(K const& key, V const& value)
         resizeTable();
     }
 
-    unsigned hashIndex1, hashIndex2;
-    std::pair<K, V> hashInsert = std::make_pair(key, value);
+    unsigned hashIndex1, hashIndex2, hashIndex_H;
+    //std::pair<K, V> hashInsert = std::make_pair(key, value);
+
+    std::pair<K, V> * hashInsert = new std::pair<K, V>(key, value);
 
     //first hash
     
@@ -98,8 +100,26 @@ void DHHashTable<K, V>::insert(K const& key, V const& value)
     //secondary_hash
     hashIndex2 = hashes::secondary_hash(key,size);
 
+    for(size_t i = 0; i < size; i++)
+    {
+        hashIndex_H = (hashIndex1 + hashIndex2 * i)%size;
+        //should_probe returns 1 when space has been used
+        if(!should_probe[i]){
+            break;
+        }
+    }
+
+    //insert element into linked list
+    table[hashIndex_H] = hashInsert;
+
+    //increase elems private member
+    elems++;
+
+    //change should probe value at hashIndex
+    should_probe[hashIndex_H] = true;
+
     //(void) key; // prevent warnings... When you implement this function, remove this line.
-    (void) value; // prevent warnings... When you implement this function, remove this line.
+    //(void) value; // prevent warnings... When you implement this function, remove this line.
 }
 
 template <class K, class V>
@@ -108,6 +128,20 @@ void DHHashTable<K, V>::remove(K const& key)
     /**
      * @todo Implement this function
      */
+    std::pair<K, V> *empty = new std::pair<K, V>(K(), V());
+
+    for (size_t i = 0; i < size; i++)
+    {
+        //segfaults here if table[i] is null
+        if(should_probe[i]){    
+            if (table[i]->first == key)
+            {
+                table[i] = empty;
+                elems--;
+                return;
+            }
+        }
+    }
 }
 
 template <class K, class V>
@@ -116,6 +150,18 @@ int DHHashTable<K, V>::findIndex(const K& key) const
     /**
      * @todo Implement this function
      */
+    for (size_t i = 0; i < size; i++)
+    {
+        //segfaults here if table[i] is null
+        if(should_probe[i]){
+            if (table[i]->first == key)
+            {
+                //???is this right?
+                return i;
+            }
+        }
+    }
+
     return -1;
 }
 

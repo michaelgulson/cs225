@@ -125,6 +125,7 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
 
     //find available space through linear probing Hash Table
     hashIndex = hashes::hash(key, size);
+    hashIndex %=size;
 
     //??? Is this how we should use should_probe?
     for(size_t i=0; i<size; i++){
@@ -160,11 +161,15 @@ void LPHashTable<K, V>::remove(K const& key)
 
     for (size_t i = 0; i < size; i++)
     {
-        if (table[i]->first == key)
+        if (should_probe)
         {
-            table[i] = empty;
-            elems--;
-            return;
+
+            if (table[i]->first == key)
+            {
+                table[i] = empty;
+                elems--;
+                return;
+            }
         }
     }
 }
@@ -178,12 +183,21 @@ int LPHashTable<K, V>::findIndex(const K& key) const
      *
      * Be careful in determining when the key is not in the table!
      */
+
+    //most efficient way to find key
+    unsigned hashIndex;
+    hashIndex = hashes::hash(key, size);
+
     for (size_t i = 0; i < size; i ++)
     {
-        if (table[i]->first == key)
+        //segfaults here if table[i] is null
+        if (should_probe[(hashIndex + i) % size])
         {
-            //???is this right?
-            return i;
+            if (table[(hashIndex+i)%size]->first == key)
+            {
+                //???is this right?
+                return i;
+            }
         }
     }
 
@@ -286,31 +300,51 @@ void LPHashTable<K, V>::resizeTable()
     newTableSizePrime = findPrime(size * 2);
     
     //create copy table
-    std::pair<K, V> ** copyTable = new std::pair<K, V> *[size];
+    std::pair<K, V> ** originalTable = new std::pair<K, V> *[size];
 
-    copyTable = table;
+    originalTable = table;
     //mallocate() memory for table
     table = new std::pair<K, V> *[newTableSizePrime];
+
+    bool * should_probe_original = new bool[size];
+    should_probe_original = should_probe;
+    delete [] should_probe;
+    should_probe = new bool[newTableSizePrime];
+
+    for (size_t i = 0; i < newTableSizePrime; i++)
+    {
+        table[i] =NULL;
+        should_probe[i] = false;
+    }
+    
+    
 
     //rehash key values
     unsigned hashIndex;
 
     for (size_t i = 0; i < size; i++)
     {
+        //no need to rehash empty bins
+        if(!should_probe_original[i]){
+            continue;
+        }
         for (size_t j = 0; j < newTableSizePrime; j++){
             //should_probe returns 1 when something occupied bin previously
-            if (should_probe[hashIndex]) {
+            hashIndex = hashes::hash(originalTable[i]->first, newTableSizePrime);
+            hashIndex %= newTableSizePrime;
+            if (should_probe[i])
+            {
                 hashIndex++;
                 hashIndex %= newTableSizePrime;
             }
             else{
-                hashIndex = hashes::hash(copyTable[i]->first, newTableSizePrime);
-                *table[hashIndex] = *copyTable[i];
+                *table[hashIndex] = *originalTable[i];
+                should_probe[hashIndex]=true;
                 break;
             }
         }
     }
 
-    delete[] copyTable;
+    delete[] originalTable;
     size = newTableSizePrime;
 }
