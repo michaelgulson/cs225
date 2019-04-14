@@ -88,34 +88,34 @@ void CommonWords::init_common()
     /* Your code goes here! */
 //iterate througgh files
 
-    for(unsigned long i = 0; i < file_word_maps.size(); i++)
-    { //iterate througgh files
-        auto lookup_file_word_maps = (file_word_maps[i]).begin();
-        for (lookup_file_word_maps = (file_word_maps[i]).begin(); lookup_file_word_maps != (file_word_maps[i]).end(); lookup_file_word_maps++){
-            auto lookup_common = common.find((*lookup_file_word_maps).first);
-            // if (lookup_common == file_word_maps[i].end())
-            // {
-                //file_word_maps[i][words[j]]++;
-            // common.insert(*(lookup_file_word_maps));
-                // common[file_word_maps[i].first]++;
-            if (lookup_common != (file_word_maps[i]).end())
-            {
-                (*lookup_common).second++;
-            }
-            //DNE
-            else{
-                common[(*lookup_file_word_maps).first] = 1;
-                //common.insert({lookup_file_word_maps->first, 1});
-            }
-            // }
-            // else{
-            //     //do nothing?
-            //     //common.insert({lookup_file_word_maps->first, 1});
-            //     lookup_common->second = lookup_common->second + lookup_file_word_maps->second;
-            // }
-        }
+    // for(unsigned long i = 0; i < file_word_maps.size(); i++)
+    // { //iterate througgh files
+    //     auto lookup_file_word_maps = (file_word_maps[i]).begin();
+    //     for (lookup_file_word_maps = (file_word_maps[i]).begin(); lookup_file_word_maps != (file_word_maps[i]).end(); lookup_file_word_maps++){
+    //         auto lookup_common = common.find((*lookup_file_word_maps).first);
+    //         // if (lookup_common == file_word_maps[i].end())
+    //         // {
+    //             //file_word_maps[i][words[j]]++;
+    //         // common.insert(*(lookup_file_word_maps));
+    //             // common[file_word_maps[i].first]++;
+    //         if (lookup_common != (file_word_maps[i]).end())
+    //         {
+    //             (*lookup_common).second++;
+    //         }
+    //         //DNE
+    //         else{
+    //             common[(*lookup_file_word_maps).first] = 1;
+    //             //common.insert({lookup_file_word_maps->first, 1});
+    //         }
+    //         // }
+    //         // else{
+    //         //     //do nothing?
+    //         //     //common.insert({lookup_file_word_maps->first, 1});
+    //         //     lookup_common->second = lookup_common->second + lookup_file_word_maps->second;
+    //         // }
+    //     }
 
-    }
+    // }
 
 
     for (auto &file_word_map_ : file_word_maps)
