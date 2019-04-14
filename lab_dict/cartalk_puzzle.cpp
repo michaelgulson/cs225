@@ -26,5 +26,50 @@ vector<std::tuple<std::string, std::string, std::string>> cartalk_puzzle(Pronoun
     vector<std::tuple<std::string, std::string, std::string>> ret;
 
     /* Your code goes here! */
+    vector<std::string> words_vec;
+
+    ifstream wordsFile(word_list_fname);
+    string word;
+    if (wordsFile.is_open())
+    {
+        /* Reads a line from `wordsFile` into `word` until the file ends. */
+        while (getline(wordsFile, word))
+        {
+            //words_vec.push_back(word);
+            if(word.size()<3){
+                continue;
+            }
+            string currString, subString1, subString2;
+            currString = word;
+            //wrack -> rack
+            //[pos,size()]
+            //std::str.substr(1);
+            subString1 = currString.substr(1);
+
+            //wrack -> wack
+            //substring2 std::str.substr(2);
+            //std::str.insert(0, substring2)
+            subString2 = currString.substr(2);
+            subString2 = subString2.insert(0, 1, currString[0]);
+
+            if (d.homophones(subString1, subString2) && d.homophones(currString, subString2))
+            {
+                ret.emplace_back(currString, subString1, subString2);
+            }
+        }
+    }
+
+    //wrack -> rack
+    //[pos,size()]
+    //std::str.substr(1);
+
+    // for (size_t i = 0; i < words_vec.size(); i++)
+    // {
+        
+
+    // }
+    
+
+
     return ret;
 }
