@@ -72,9 +72,10 @@ PronounceDict::PronounceDict(const map<string, vector<string>>& pronun_dict)
  * one or both words weren't in the dictionary).
  * Note: The word keys in the dictionary are stored in uppercase.
  */
-bool PronounceDict::homophones(const string& word1, const string& word2) const
+bool PronounceDict::homophones(const string &word1, const string &word2) const
 {
     /* Your code goes here! */
+
     string word1Upper(word1);
     string word2Upper(word2);
 
@@ -84,18 +85,30 @@ bool PronounceDict::homophones(const string& word1, const string& word2) const
     //data associated with that dictionary (data/cmudict.0.7a)
     auto dict_itr1 = dict.find(word1Upper);
     //auto dict_itr2 = dict.find(word2Upper);
-    if(dict_itr1 == dict.end()){
+    if (dict_itr1 == dict.end())
+    {
         return false;
     }
-
+    //TESTING TO SEE WHAT HAPPENS... IT WORKS!!!!!!!
+    auto dict_itr3 = dict.find(word2Upper);
+    //auto dict_itr2 = dict.find(word2Upper);
+    if (dict_itr3 == dict.end())
+    {
+        return false;
+    }
     // auto dict_itr2 = ((*dict_itr1).second).find(word2Upper);
-    auto dict_itr2 = ((*dict_itr1).second).begin();
-    dict_itr2 = std::find(dict_itr1->second.begin(), dict_itr1->second.end(), word2Upper);
-    if (dict_itr2 == ((*dict_itr1).second).end()){
+    // auto dict_itr2 = ((*dict_itr1).second).begin();
+
+    //dict_itr2 = std::find(dict_itr1->second.begin(), dict_itr1->second.end(), word2Upper);
+
+    if (dict_itr3->second != dict_itr1->second)
+    { //((*dict_itr1).second).end()){
         return false;
     }
-    else{
+    else
+    {
         return true;
     }
+
     //   return true;
 }
