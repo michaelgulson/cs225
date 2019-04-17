@@ -450,25 +450,45 @@ cs225::PNG* SquareMaze::drawCreativeMaze(          ) {
 
   //Sets up mazes walls
   for(int i = 0; i < mazeWidth - 40; i ++){
-    for(int j = 0; j < mazeHeight - 20; j ++){
-      if(rightWallExist[(mazeWidth * j) + i] == true || i == (mazeWidth - 40)-1){
+    for(int j = 0; j < mazeHeight - 40; j ++){
+      if(rightWallExist[(mazeWidth * j) + i] == true || (i == (mazeWidth - 40)-1 && j < mazeHeight - 50)){
         theMaze = setUpCreativeMaze2(0 , 11, 0,(i+1) * 10, (10*j), theMaze);
       }
-      if(downWallExist[(mazeWidth * j) + i] == true || j == 0 ){
+      if(downWallExist[(mazeWidth * j) + i] == true|| (j == mazeHeight - 40-1 && i < mazeWidth - 50)){//|| j == 0 ){
         theMaze = setUpCreativeMaze2(0 , 11, 1,(10*i), (j+1)*10, theMaze);
       }
     }
   }
-  for(int i = 0; i < mazeWidth ; i ++){
-    for(int j = mazeHeight - 20; j < mazeHeight; j ++){
-      if(rightWallExist[(mazeWidth * j) + i] == true || i == (mazeWidth-1)){
+  for(int i = mazeWidth - 50; i < mazeWidth - 30; i ++){
+    for(int j = mazeHeight - 50; j < mazeHeight - 30; j ++){
+      if(rightWallExist[(mazeWidth * j) + i] == true || (i == (mazeWidth - 30)-1 && j < mazeHeight - 40)|| (i == (mazeWidth-50) && j > mazeHeight - 40)){
         theMaze = setUpCreativeMaze2(0 , 11, 0,(i+1) * 10, (10*j), theMaze);
       }
-      if(downWallExist[(mazeWidth * j) + i] == true|| (j == mazeHeight-20 && i >  mazeWidth - 40)
-           || j == mazeHeight-1){
+      if(downWallExist[(mazeWidth * j) + i] == true || (j == mazeHeight - 50 && i > mazeWidth - 40)|| (j == mazeHeight - 30-1 && i < mazeWidth - 40)){
         theMaze = setUpCreativeMaze2(0 , 11, 1,(10*i), (j+1)*10, theMaze);
       }
     }
   }
+  for(int i = mazeWidth - 40; i < mazeWidth - 10; i ++){
+    for(int j = mazeHeight - 40; j < mazeHeight - 10; j ++){
+      if(rightWallExist[(mazeWidth * j) + i] == true || (i == (mazeWidth - 10)-1 && j < mazeHeight - 20)|| (i == (mazeWidth-40) && j > mazeHeight - 30)){
+        theMaze = setUpCreativeMaze2(0 , 11, 0,(i+1) * 10, (10*j), theMaze);
+      }
+      if(downWallExist[(mazeWidth * j) + i] == true || (j == mazeHeight - 40 && i > mazeWidth - 30) || (j == mazeHeight - 10-1 && i < mazeWidth - 20)){
+        theMaze = setUpCreativeMaze2(0 , 11, 1,(10*i), (j+1)*10, theMaze);
+      }
+    }
+  }
+  for(int i = mazeWidth - 20; i < mazeWidth ; i ++){
+    for(int j = mazeHeight - 20; j < mazeHeight ; j ++){
+      if(rightWallExist[(mazeWidth * j) + i] == true || (i == (mazeWidth-20) && j > mazeHeight - 10)){
+        theMaze = setUpCreativeMaze2(0 , 11, 0,(i+1) * 10, (10*j), theMaze);
+      }
+      if(downWallExist[(mazeWidth * j) + i] == true || (j == mazeHeight - 20 && i > mazeWidth - 10)){//|| j == 0 ){
+        theMaze = setUpCreativeMaze2(0 , 11, 1,(10*i), (j+1)*10, theMaze);
+      }
+    }
+  }
+
   return theMaze;
 }
