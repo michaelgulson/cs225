@@ -24,3 +24,6 @@ With dignity, you accept Margaret's proposition.
 
 # Diner-Team-Merkel
 You raise your pint glass and yell, "LETS BRING EQUALITY TO THE EU AND BEYOND!!"
+
+# Diner-Team-Einstein-yr3000
+You reject help from anyone
