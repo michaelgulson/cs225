@@ -15,7 +15,6 @@ int DisjointSets::find ( int  elem){
         return elem;
     }
     else{
-
        //else recurse through vector to find require elem
        return DisjointSetsVector[elem] = find(DisjointSetsVector[elem]);
     }
@@ -25,7 +24,7 @@ void DisjointSets::setunion ( int  a,int  b){
 	// FIrst we need to find the pos of A and B
     int findA = find(a);
     int findB = find(b);
-
+    
     //check for if they are the same and does nothing if they are
     if(findA == findB){
       return;
@@ -49,7 +48,6 @@ void DisjointSets::setunion ( int  a,int  b){
     DisjointSetsVector[findA] = setUnion;
     //DisjointSetsVector[findA] = DisjointSetsVector[findA] + //DisjointSetsVector[findB];
     }
-
 }
 //returns number of nodes in the up tree
 int DisjointSets::size ( int  elem){

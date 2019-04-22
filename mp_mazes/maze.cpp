@@ -413,22 +413,7 @@ cs225::PNG* SquareMaze::setUpCreativeMaze(int start,int end, int zero, cs225::PN
 }
 
 //Helper meathod to set up an unslve maze
-cs225::PNG* SquareMaze::setUpCreativeMaze2(int start,int end, int which,int left, int right, cs225::PNG*& theMaze){
-  cs225::HSLAPixel* getPix;
-  for(int i = start; i < end; i++){
-    if(which == 0){
-      getPix = &theMaze->getPixel(left,right+i);
-    }
-    else{
-      getPix = &theMaze->getPixel(left+i,right);
-    }
-
-    getPix->l = 0.0;
-  }
-  return theMaze;
-}
 //Get the last
-int SquareMaze::getTheLastCreative(){
   int getLast = mazeWidth - 1;
   while(getTheRows[getLast] == getTheRows[getLast -1]){
     getLast = getLast - 1;
