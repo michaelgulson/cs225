@@ -4,19 +4,19 @@
 #include <algorithm>
 #include <vector>
 
-class DisjointSets
-{
+class DisjointSets{
 
-  public:
-    //required functions
-    void addelements(int num);
-    int find(int elem);
-    void setunion(int a,
-                  int b);
-    int size(int elem);
+public:
+//required functions
+void addelements 	( 	int  	num	) 	;
+int find 	( 	int  	elem	) 	;
+void setunion 	( 	int  	a,
+                                int  	b 
+) ;
+int size 	( 	int  	elem	) 	;
 
-  private:
-    //Required datastruct
-    std::vector<int> DisjointSetsVector;
+private:
+//Required datastruct
+std::vector<int> DisjointSetsVector;
 };
 #endif

@@ -24,8 +24,35 @@
  *
  * @param startingTokens The number of starting tokens in the game of Nim.
  */
+void NimLearner::InsertEdg(std::string one, std::string two){
+  g_.insertEdge(one,two);
+  g_.setEdgeWeight(one,two,0);
+}
 NimLearner::NimLearner(unsigned startingTokens) : g_(true, true) {
     /* Your code goes here! */
+    for(int i = startingTokens; i >= 0; i--){
+      
+      //FIrst insert all vertex to create a graph of all possible movements(and some that are not)
+      //THose don't matter as tthey are delt in edge cases
+      g_.insertVertex("p1-" + std::to_string(i));
+      g_.insertVertex("p2-" + std::to_string(i));
+    }
+    for(int i = startingTokens; i >= 2; i--){
+      
+      //Now you need to insert all edgecases, do this till 2 moves left as those
+      //are special cases
+      InsertEdg("p1-" + std::to_string(i), "p2-" + std::to_string(i-1));
+      InsertEdg("p1-" + std::to_string(i), "p2-" + std::to_string(i-2));
+      InsertEdg("p2-" + std::to_string(i), "p1-" + std::to_string(i-1));
+      InsertEdg("p2-" + std::to_string(i), "p1-" + std::to_string(i-2));
+    }
+    
+  //Finish the edge cases off by manually doing the specail cases
+  InsertEdg(("p1-1"),("p2-0"));
+  InsertEdg(("p2-1"),("p1-0"));
+  
+  //Set starting vector
+  startingVertex_ = ("p1-" + std::to_string(startingTokens));
 }
 
 /**
@@ -40,6 +67,16 @@ NimLearner::NimLearner(unsigned startingTokens) : g_(true, true) {
 std::vector<Edge> NimLearner::playRandomGame() const {
   vector<Edge> path;
  /* Your code goes here! */
+  //Get a random amount for the coins that the player will take
+  int pathSt = rand()%g_.getAdjacent(startingVertex_).size();
+  
+  //Do a for loop through the vector and randomly get the plays the players will do
+  for(Vertex beg =startingVertex_; g_.getAdjacent(beg).size() != 0; beg = g_.getAdjacent(beg)[pathSt]){
+    pathSt = rand()%g_.getAdjacent(beg).size();
+    path.push_back(g_.getEdge(beg,g_.getAdjacent(beg)[pathSt]));
+  }
+  
+  //Return the randomly achieved path.
   return path;
 }
 
@@ -61,6 +98,17 @@ std::vector<Edge> NimLearner::playRandomGame() const {
  */
 void NimLearner::updateEdgeWeights(const std::vector<Edge> & path) {
  /* Your code goes here! */
+  //Set a num 1 for later
+  int Num = 1;
+  
+  //Have a for loop that goes through the path
+  for(int i = path.size()-1; i >= 0; i--){
+    
+    //THroughout the path given set the edge to be corresponding to the path
+    int getEdegeWid = g_.getEdgeWeight(path[i].source,path[i].dest);
+    g_.setEdgeWeight(path[i].source,path[i].dest,getEdegeWid + Num);
+    Num = Num * -1;
+  }
 }
 
 /**
