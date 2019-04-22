@@ -11,7 +11,7 @@ public:
 void addelements 	( 	int  	num	) 	;
 int find 	( 	int  	elem	) 	;
 void setunion 	( 	int  	a,
-                                int  	b 
+                                int  	b
 ) ;
 int size 	( 	int  	elem	) 	;
 

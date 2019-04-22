@@ -15,7 +15,6 @@ int DisjointSets::find ( int  elem){
         return elem;
     }
     else{
-    
        //else recurse through vector to find require elem
        return DisjointSetsVector[elem] = find(DisjointSetsVector[elem]);
     }
@@ -33,23 +32,22 @@ void DisjointSets::setunion ( int  a,int  b){
     int setUnion = DisjointSetsVector[findA] + DisjointSetsVector[findB];
     //Then we need to check which one is bigger, if it is bigger
     if(DisjointSetsVector[findA] >= DisjointSetsVector[findB]){
-    
+
     //Set that position equal to B
     DisjointSetsVector[findA] = findB;
-    
+
     //Set B = A+B, union the 2
     ///DisjointSetsVector[findB] = DisjointSetsVector[findA] + //DisjointSetsVector[findB];
     DisjointSetsVector[findB] = setUnion;
     } else{
-    
+
     //Set B = A
     DisjointSetsVector[findB] = findA;
-    
+
     //Set A = A+B, union the 2
     DisjointSetsVector[findA] = setUnion;
     //DisjointSetsVector[findA] = DisjointSetsVector[findA] + //DisjointSetsVector[findB];
     }
-    
 }
 //returns number of nodes in the up tree
 int DisjointSets::size ( int  elem){
