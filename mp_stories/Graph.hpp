@@ -5,13 +5,17 @@
 #include <string>
 #include <iostream>
 
+
+//////???What is adjList (ask TA)///////////////////
+
+
 /**
 * @return The number of vertices in the Graph
 */
 template <class V, class E>
 unsigned int Graph<V,E>::numVertices() const {
   // TODO: Part 2
-  return 0;
+  return vertexMap.size();
 }
 
 
@@ -23,7 +27,16 @@ unsigned int Graph<V,E>::numVertices() const {
 template <class V, class E>
 unsigned int Graph<V,E>::degree(const V & v) const {
   // TODO: Part 2
-  return 0;
+  //iterate through edges
+  //find the number of edges with v as source_ or dest_
+  unsigned int degreeNum = 0;
+  edgeListIter it = edgeList.begin();
+  for (it = edgeList.begin(); it != edgeList.end(); it++){
+    if(it->dest_ == v|| it->source_  == v){
+      degreeNum++;
+    }
+  }
+  return degreeNum;
 }
 
 
@@ -36,6 +49,8 @@ template <class V, class E>
 V & Graph<V,E>::insertVertex(std::string key) {
   // TODO: Part 2
   V & v = *(new V(key));
+
+  vertexMap.insert(v);
   return v;
 }
 
@@ -47,6 +62,16 @@ V & Graph<V,E>::insertVertex(std::string key) {
 template <class V, class E>
 void Graph<V,E>::removeVertex(const std::string & key) {
   // TODO: Part 2
+
+  //remove vertex from map
+  vertexMap.erase(key);
+  //remove all edges with v
+  edgeListIter it = edgeList.begin();
+  for (it = edgeList.begin(); it != edgeList.end(); it++){
+    if(it->dest_ == v|| it->source_  == v){
+      edgeList.erase(key);   
+    }
+  }
 }
 
 
@@ -60,7 +85,7 @@ template <class V, class E>
 E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
   // TODO: Part 2
   E & e = *(new E(v1, v2));
-
+  edgeList.insert(e);
   return e;
 }
 
@@ -74,6 +99,18 @@ E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
 template <class V, class E>
 void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {  
   // TODO: Part 2
+  V V1, V2; 
+  V1 = vertexMap.find(key1);
+  V2 = vertexMap.find(key2);
+
+  edgeListIter it = edgeList.begin();
+  for (it = edgeList.begin(); it != edgeList.end(); it++){
+    if ((it->dest_ == V1) && (it->source_ == V2) || (it->dest_ == V2) && (it->source_ == V1))
+    {
+      edgeList.erase(it);
+    }
+  }
+  return;
 }
 
 
@@ -85,6 +122,8 @@ void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
 template <class V, class E>
 void Graph<V,E>::removeEdge(const edgeListIter & it) {
   // TODO: Part 2
+  edgeList.erase(it);
+  return;
 }
 
 
