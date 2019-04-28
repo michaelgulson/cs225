@@ -30,7 +30,7 @@ unsigned int Graph<V,E>::degree(const V & v) const {
   //iterate through edges
   //find the number of edges with v as source_ or dest_
   unsigned int degreeNum = 0;
-  edgeListIter it = edgeList.begin();
+  auto it = edgeList.begin();
   for (it = edgeList.begin(); it != edgeList.end(); it++){
     if(it->dest_ == v|| it->source_  == v){
       degreeNum++;
@@ -49,8 +49,9 @@ template <class V, class E>
 V & Graph<V,E>::insertVertex(std::string key) {
   // TODO: Part 2
   V & v = *(new V(key));
+  std::pair<std::string, V_byRef> insertV(key, v);
 
-  vertexMap.insert(v);
+  vertexMap.insert(insertV);
   return v;
 }
 
@@ -62,13 +63,13 @@ V & Graph<V,E>::insertVertex(std::string key) {
 template <class V, class E>
 void Graph<V,E>::removeVertex(const std::string & key) {
   // TODO: Part 2
-
+  auto vIter = vertexMap.find(key);
   //remove vertex from map
-  vertexMap.erase(key);
+  vertexMap.erase(vIter);
   //remove all edges with v
-  edgeListIter it = edgeList.begin();
+  auto it = edgeList.begin();
   for (it = edgeList.begin(); it != edgeList.end(); it++){
-    if(it->dest_ == v|| it->source_  == v){
+    if(it->dest_ == (*vIter) || it->source_  == (*vIter)){
       edgeList.erase(key);   
     }
   }
@@ -85,7 +86,7 @@ template <class V, class E>
 E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
   // TODO: Part 2
   E & e = *(new E(v1, v2));
-  edgeList.insert(e);
+  edgeList.push_back(e);
   return e;
 }
 
@@ -105,7 +106,7 @@ void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
 
   edgeListIter it = edgeList.begin();
   for (it = edgeList.begin(); it != edgeList.end(); it++){
-    if ((it->dest_ == V1) && (it->source_ == V2) || (it->dest_ == V2) && (it->source_ == V1))
+    if (((it->dest_ == V1) && (it->source_ == V2)) || ((it->dest_ == V2) && (it->source_ == V1)))
     {
       edgeList.erase(it);
     }
