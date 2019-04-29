@@ -8,6 +8,10 @@
 
 /////////////USE ADJLIST algotithm in slides////////////
 
+//"MP tests are designed to ensure you have an implementation that"
+//"runs in the running time described in lecture of the adjacency list"
+// with the exception of vertex/edge removal
+
 
 /**
 * @return The number of vertices in the Graph
@@ -80,13 +84,14 @@ V & Graph<V,E>::insertVertex(std::string key) {
 template <class V, class E>
 void Graph<V,E>::removeVertex(const std::string & key) {
   // TODO: Part 2
+  //THIS FUNCTION CAN BE BRUTE FORCED(efficiency isn't important)
+
   auto vertIt = vertexMap.find(key);
   //remove vertex from map
   vertexMap.erase(key);
 
   //remove all edges with v from edgeListIter
 
-  ////IS THIS OK??  EFFICIENT//////////
   auto it = edgeList.begin();
   for (it = edgeList.begin(); it != edgeList.end(); it++){
     if(it->dest_ == vertIt-|| it->source_  == v){
@@ -126,8 +131,7 @@ E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
   v1adjList.push_back(edgeIter);
 
   auto v2adjList = adjList.find(v2->key);
-  v2adjList.push_back
-  +
+  v2adjList.push_back;
 
   return e;
 }
@@ -142,17 +146,35 @@ E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
 template <class V, class E>
 void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
   // TODO: Part 2
+
+  //THIS FUNCTION CAN BE BRUTE FORCED(efficiency isn't important)
+
   V V1, V2;
   V1 = vertexMap.find(key1);
   V2 = vertexMap.find(key2);
+  
+  auto deleteEdge = edgeList.begin();
 
-  edgeListIter it = edgeList.begin();
+  auto it = edgeList.begin();
   for (it = edgeList.begin(); it != edgeList.end(); it++){
     if (((it->dest_ == V1) && (it->source_ == V2)) || ((it->dest_ == V2) && (it->source_ == V1)))
     {
+      deleteEdge = it;
       edgeList.erase(it);
     }
   }
+
+  //remove vertexes from adjList
+  auto v1adjList = adjList.find(key1);
+  auto v2adjList = adjList.find(key2);
+  
+  //delete v2 from v1 adjacency list
+  auto deleteItr = v1adjList.find(V2);
+  v1adjList.remove(deleteItr);
+
+  //delete v1 from v2 adjacency list
+  deleteItr = v2adjList.find(V1);
+  v2adjList.remove(deleteItr);
   return;
 }
 
@@ -165,7 +187,27 @@ void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
 template <class V, class E>
 void Graph<V,E>::removeEdge(const edgeListIter & it) {
   // TODO: Part 2
+
+  //remove vertexes from adjList
+  it->dest_->key
+
+   //remove vertexes from adjList
+  auto v1adjList = adjList.find(it->dest_->key);
+  auto v2adjList = adjList.find(it->source_->key);
+
+  //delete v2 from v1 adjacency list
+  auto deleteItr = v1adjList.find(V2);
+  v1adjList.remove(deleteItr);
+
+  //delete v1 from v2 adjacency list
+  deleteItr = v2adjList.find(V1);
+  v2adjList.remove(deleteItr);
+  
+
+  //remove edge from edgeList
   edgeList.erase(it);
+
+
   return;
 }
 
