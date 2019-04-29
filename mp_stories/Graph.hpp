@@ -59,6 +59,7 @@ template <class V, class E>
 V & Graph<V,E>::insertVertex(std::string key) {
   // TODO: Part 2
   V & v = *(new V(key));
+  std::pair<std::string, V_byRef> insertV(key, v);
 
 
   //???when we insert a vertex do we not create edges? 0 egdges in adjList
@@ -147,7 +148,7 @@ void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
 
   edgeListIter it = edgeList.begin();
   for (it = edgeList.begin(); it != edgeList.end(); it++){
-    if ((it->dest_ == V1) && (it->source_ == V2) || (it->dest_ == V2) && (it->source_ == V1))
+    if (((it->dest_ == V1) && (it->source_ == V2)) || ((it->dest_ == V2) && (it->source_ == V1)))
     {
       edgeList.erase(it);
     }
