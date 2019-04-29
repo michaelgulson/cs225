@@ -44,7 +44,7 @@ unsigned int Graph<V,E>::degree(const V & v) const {
   ///psuedocode
   unsigned int degreeNum = 0;
   char * Key = v->key;
-  auto edgeList= unordered_map.find(Key);
+  auto edgeList= adjList.find(Key);
   return edgeList.size();
 
 }
