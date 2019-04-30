@@ -47,7 +47,7 @@ unsigned int Graph<V,E>::degree(const V & v) const {
   ///////////////////////////////////
   ///psuedocode
   unsigned int degreeNum = 0;
-  char * Key = v->key;
+  const std::string Key = v.key();
   auto edgeList= adjList.find(Key);
   return edgeList.size();
 
@@ -60,10 +60,10 @@ unsigned int Graph<V,E>::degree(const V & v) const {
 * @return The inserted Vertex
 */
 template <class V, class E>
-V & Graph<V,E>::insertVertex(std::string key) {
+V & Graph<V,E>::insertVertex(const std::string key) {
   // TODO: Part 2
   V & v = *(new V(key));
-  std::pair<std::string, V_byRef> insertV(key, v);
+  const std::pair<const std::string, V_byRef> insertV(key, v);
 
 
   //???when we insert a vertex do we not create edges? 0 egdges in adjList
@@ -72,8 +72,9 @@ V & Graph<V,E>::insertVertex(std::string key) {
   vertexMap.insert(insertV);
 
   //initialize entry into adjList empty list
-  std::list<edgeListIter> emptyList;
-  adjList.push_back(emptyList);
+  const std::list<edgeListIter> emptyList;
+  const std::pair<const std::string, const std::list<edgeListIter>> insertadjList(key, emptyList);
+  adjList.insert(insertadjList);
   return v;
 }
 
@@ -121,19 +122,24 @@ E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
 
   //insert edge into edgeList
   E & e = *(new E(v1, v2));
-  edgeList.insert(e);
+  edgeList.push_back(e);
 
 
   //insert edge into adjList
-  ////IS v1->key correct??///////
-  auto edgeIter = edgeList.find(e);
+  ////IS v1->key correct??//////
 
 
-  auto v1adjList = adjList.find(v1->key);
-  v1adjList.push_back(edgeIter);
+  //end() returns the past-the-end element iterator
+  // auto edgeIter = edgeList.end()--;
 
-  auto v2adjList = adjList.find(v2->key);
-  v2adjList.push_back;
+  // const ::list<edgeListIter> emptyList;
+  // const ::pair<const ::string, const ::list<edgeListIter>> insertadjList(key, emptyList);
+
+  auto v1adjList = adjList.find(v1.key());
+  v1adjList.push_back(v2);
+
+  auto v2adjList = adjList.find(v2.key());
+  v2adjList.push_back(v1);
 
   return e;
 }
@@ -145,7 +151,7 @@ E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
 * @param key1 The key of the source Vertex
 * @param key2 The key of the destination Vertex
 */
-template <class V, class E>
+template <class V, class E>   
 void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
   // TODO: Part 2
 
@@ -222,7 +228,7 @@ void Graph<V,E>::removeEdge(const edgeListIter & it) {
 template <class V, class E>
 const std::list<std::reference_wrapper<E>> Graph<V,E>::incidentEdges(const std::string key) const {
   // TODO: Part 2
-  std::list<std::reference_wrapper<E>> edges;
+  const std::list<const std::reference_wrapper<E>> edges;
   return edges;
 }
 
