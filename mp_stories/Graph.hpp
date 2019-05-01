@@ -4,6 +4,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 
 /////////////USE ADJLIST algotithm in slides////////////
@@ -47,9 +48,15 @@ unsigned int Graph<V,E>::degree(const V & v) const {
   ///////////////////////////////////
   ///psuedocode
   unsigned int degreeNum = 0;
+  
+  //Get the string of the key
   const std::string Key = v.key();
-  auto edgeList= adjList.at(Key);
-  return edgeList.size();
+  
+  //Get position inside of adjList
+  auto edgeList= &adjList.at(Key);
+  
+  //return size
+  return edgeList->size();
   
 }
 
@@ -72,7 +79,11 @@ V & Graph<V,E>::insertVertex(const std::string key) {
   vertexMap.insert(insertV);
   //initialize entry into adjList empty list
   const std::list<edgeListIter> emptyList;
+  
+  //Creat filled entry vertex
   const std::pair<const std::string, const std::list<edgeListIter>> insertadjList(key, emptyList);
+  
+  //Insert into adjLIst
   adjList.insert(insertadjList);
   return v;
 }
@@ -91,15 +102,24 @@ void Graph<V,E>::removeVertex(const std::string & key) {
   //  auto ite = ((*iter)).get();
   //  removeEdge(ite.source(),ite.dest());
   //}
+  
+  //Cycles through the edges of the key
   for(auto iterat: incidentEdges(key)){
+    
+    //Get source
     auto sur = iterat.get().source();
+    
+    //Get des
     auto des = iterat.get().dest();
+    
+    //Remove from edge
     removeEdge(sur,des);
   }
   
   //erase from ADJLIST
   adjList.erase(key);
   
+  //Erase from vertex Map
   vertexMap.erase(key);
   
   return;
@@ -118,18 +138,31 @@ E & Graph<V,E>::insertEdge(const V & v1, const V & v2) {
   // TODO: Part 2
   
   //insert edge into edgeList
+  
+  //Create a new E and push the e to front of edge list
   E & e = *(new E(v1, v2));
+  
   edgeList.push_front(e);
   
+  //Get the alis of the position where the key is at
   auto alis = &adjList.at(v1.key());
+  
+  //Holds the begining position of begin
   auto Edbeg = edgeList.begin();
+  
+  //Push to front
   alis->push_front(Edbeg);
+  
+  //If the edge is not directed
   if(e.directed() == false){
+    //Get the alias of the second key, same logic as above
     auto alis2 = &adjList.at(v2.key());
     auto Edbeg2 = edgeList.begin();
     alis2->push_front(Edbeg2);
   }
+  //adjList[v1.key()].push_front(edgeList.begin());
   
+//adjList[v2.key()].push_front(edgeList.begin());
   //insert edge into adjList
   ////IS v1->key correct??//////
   
@@ -159,7 +192,62 @@ void Graph<V,E>::removeEdge(const std::string key1, const std::string key2) {
   // TODO: Part 2
   
   //THIS FUNCTION CAN BE BRUTE FORCED(efficiency isn't important)
+  //remove vertexes from adjList
+  /*
+  auto v1adjList = adjList.find(key1);
+  auto v2adjList = adjList.find(key2);
   
+  //delete v2 from v1 adjacency list
+  auto deleteItr = v1adjList.find(key1);
+  v1adjList.remove(deleteItr);
+  
+  //delete v1 from v2 adjacency list
+  deleteItr = v2adjList.find(key2);
+  v2adjList.remove(deleteItr);
+   */
+  auto deletetion = edgeList.end();
+  //auto it = edgeList.begin();
+  //Creates a vector of the keys so we can circle through them
+  std::vector<std::string> keys;
+  keys.push_back(key1);
+  keys.push_back(key2);
+  
+  //A bool to make sure it is effiecent
+  bool efficientCheck = false;
+  
+  //Cycle through the keys
+  for(auto keya: keys){
+    
+    //Makes sure we are not running a second time if we can avoid it
+    if(efficientCheck == false){
+      
+      //Iterate through AdjList at begin spot
+      for (auto it = adjList.at(keya).begin(); it != adjList.at(keya).end(); it++){
+        
+        //EVery cycle check the key vs the given keys
+          if ((((*(*it)).get().dest().key() == (key2)) && ((*(*it)).get().source().key() == (key1))))
+          {
+            
+            //Gets the it and deletes it
+              auto deleteEdge = it;
+              adjList.at(keya).erase(deleteEdge);
+              
+              //Holds it for the future
+              deletetion = *deleteEdge;
+              break;
+          }
+          
+          //Checks for effiecenty
+          auto efficChe2 = (*(*it)).get().directed();
+          if(efficientCheck == false && efficChe2 == true){
+              efficientCheck = true;
+          }
+      }
+    }
+  }
+  
+  //Removes the Edge
+  removeEdge(deletetion);
   return;
 }
 
@@ -174,7 +262,7 @@ void Graph<V,E>::removeEdge(const edgeListIter & it) {
   // TODO: Part 2
   
   
-  
+  /*
   //remove vertexes from adjList
   auto v1adjList = adjList.find(it->dest_->key);
   auto v2adjList = adjList.find(it->source_->key);
@@ -186,7 +274,12 @@ void Graph<V,E>::removeEdge(const edgeListIter & it) {
   //delete v1 from v2 adjacency list
   deleteItr = v2adjList.find(it->dest_->key);
   v2adjList.remove(deleteItr);
+  */
   
+  //Remobes the iter
+  if(it != edgeList.end()){
+    edgeList.erase(it);
+  }
   
   return;
 }
@@ -206,6 +299,8 @@ const std::list<std::reference_wrapper<E>> Graph<V,E>::incidentEdges(const std::
   //    iter !=  adjList.at(key).end(); iter++){
   //  edges.push_back(*iter);
   //}
+  
+  //LOops through the adjList at key and pushback iter
   for(auto iter: adjList.at(key)){
     edges.push_back(*iter);
   }
@@ -231,6 +326,9 @@ bool Graph<V,E>::isAdjacent(const std::string key1, const std::string key2) cons
     //return true;
   //}
   //}
+  
+  //cycle throughs list and checks for the keys. tried to do all these as iterators first
+  //failed but code was nearly the same for this format.
   for(auto ea: adjList.at(key1)){
     if((*ea).get().source().key() == key2 || (*ea).get().dest().key() == key2){
       return true;
