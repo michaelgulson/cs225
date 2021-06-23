@@ -65,8 +65,8 @@ Image result;
 // grainger.readFromFile("tests/Grainger.png");
 Image michael;
 michael.readFromFile("tests/MichaelGulson150.png");
-Image aws;
-aws.readFromFile("tests/AWS-logo-150.png");
+// Image aws;
+// aws.readFromFile("tests/AWS-logo-150.png");
 // Image python;
 // python.readFromFile("tests/python-logo-150.png");
 
