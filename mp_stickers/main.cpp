@@ -60,33 +60,36 @@ else{
   expected.writeToFile("testcase1_expected.png");
 }
 */
-Image alma;
-alma.readFromFile("tests/alma.png");
-Image i;
-i.readFromFile("tests/i.png");
-Image expected;
- expected.readFromFile("tests/expected.png");
-Image expected2;
-expected2.readFromFile("tests/expected-2.png");
+Image grainger;
+grainger.readFromFile("tests/Grainger.png");
+Image michael;
+michael.readFromFile("tests/MichaelGulson150.png");
+Image aws;
+aws.readFromFile("tests/AWS-logo-150.png");
+Image python;
+python.readFromFile("tests/python-logo-150.png");
 
-StickerSheet s1(alma, 5);
-s1.addSticker(i, 20, 200);
-s1.addSticker(i, 40, 200);
+StickerSheet s1(grainger, 5);
+s1.addSticker(michael, 150, 115);
+s1.addSticker(aws, 450, 115);
+s1.addSticker(python, 750, 115);
 
-StickerSheet s2(s1);
-s2.removeSticker(1);
+s1.writeToFile("grainger-result.png")
 
-Image result1, result2;
+// StickerSheet s2(s1);
+// s2.removeSticker(1);
 
-result1 = s1.render();
-result2 = s2.render();
-if(result1 == expected2 ){
-  printf("testpt1 passed\n");
-}
-if(result2 == expected){
-  printf("testpt2 passed\n");
+// Image result1, result2;
 
-}
+// result1 = s1.render();
+// result2 = s2.render();
+// if(result1 == expected2 ){
+//   printf("testpt1 passed\n");
+// }
+// if(result2 == expected){
+//   printf("testpt2 passed\n");
+
+// }
 //REQUIRE(== expected );
 
 
