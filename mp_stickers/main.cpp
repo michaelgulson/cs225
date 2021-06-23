@@ -60,6 +60,7 @@ else{
   expected.writeToFile("testcase1_expected.png");
 }
 */
+Image result
 Image grainger;
 grainger.readFromFile("tests/Grainger.png");
 Image michael;
@@ -74,7 +75,8 @@ s1.addSticker(michael, 150, 115);
 s1.addSticker(aws, 450, 115);
 s1.addSticker(python, 750, 115);
 
-s1.writeToFile("grainger-result.png")
+result=s1.render();
+result.writeToFile("grainger-result.png");
 
 // StickerSheet s2(s1);
 // s2.removeSticker(1);
