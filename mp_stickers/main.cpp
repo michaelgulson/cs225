@@ -67,8 +67,8 @@ Image michael;
 michael.readFromFile("tests/MichaelGulson150.png");
 Image aws;
 aws.readFromFile("tests/AWS-logo-150.png");
-// Image python;
-// python.readFromFile("tests/python-logo-150.png");
+Image python;
+python.readFromFile("tests/python-logo-150.png");
 
 StickerSheet s1(grainger, 5);
 s1.addSticker(michael, 150, 5);
