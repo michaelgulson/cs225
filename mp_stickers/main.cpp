@@ -62,7 +62,7 @@ else{
 */
 Image result;
 Image grainger;
-grainger.readFromFile("tests/Grainger.png");
+grainger.readFromFile("tests/Grainger2.png");
 Image michael;
 michael.readFromFile("tests/MichaelGulson150.png");
 Image aws;
@@ -71,9 +71,9 @@ Image python;
 python.readFromFile("tests/python-logo-150.png");
 
 StickerSheet s1(grainger, 5);
-s1.addSticker(michael, 150, 115);
-s1.addSticker(aws, 450, 115);
-s1.addSticker(python, 750, 115);
+s1.addSticker(michael, 150, 5);
+s1.addSticker(aws, 450, 5);
+s1.addSticker(python, 750, 5);
 
 result=s1.render();
 result.writeToFile("grainger-result.png");
