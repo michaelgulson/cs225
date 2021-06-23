@@ -60,7 +60,7 @@ else{
   expected.writeToFile("testcase1_expected.png");
 }
 */
-Image result
+Image result;
 Image grainger;
 grainger.readFromFile("tests/Grainger.png");
 Image michael;
