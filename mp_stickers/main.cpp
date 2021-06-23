@@ -61,8 +61,8 @@ else{
 }
 */
 Image result;
-Image grainger = Image(1003, 229);
-grainger.readFromFile("tests/Grainger2.png");
+Image grainger;
+grainger.readFromFile("tests/GraingerWhite.png");
 Image michael;
 michael.readFromFile("tests/MichaelGulson150.png");
 Image aws;
