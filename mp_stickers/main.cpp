@@ -62,7 +62,7 @@ else{
 */
 Image result;
 Image grainger;
-grainger.readFromFile("tests/GraingerWhite700.png");
+grainger.readFromFile("tests/Grainger.png");
 Image michael;
 michael.readFromFile("tests/MichaelGulson150.png");
 Image aws;
