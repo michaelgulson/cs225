@@ -7,21 +7,8 @@
 
 namespace cs225{
 void StickerSheet::_copy(StickerSheet const & other){
-  // Clear self
-  //delete[] imageArr;
-
-  // Copy `other` to self
-  /*delete [] imageArr;
-  delete [] xPosition;
-  delete [] yPosition;*/
   imageArrSize = other.imageArrSize;
   basePicture= other.basePicture;
-  /*for(unsigned j = 0; j < other.basePicture.width(); j++){
-    for (unsigned k = 0; k < other.basePicture.height(); k++) {
-      HSLAPixel & pixel =  basePicture.getPixel(j,k);
-      pixel = other.basePicture.getPixel(j,k);
-    }
-  }*/
   imageArr = new Image[imageArrSize];
   xPosition = new int[imageArrSize];
   yPosition = new int[imageArrSize];
@@ -46,19 +33,7 @@ StickerSheet::StickerSheet(const Image &picture, unsigned max){
   yPosition = new int[max];
   basePicture = picture;
   imageArrSize = max;
-  //Image negH()
-  /*for(unsigned j = 0; j < basePicture.width(); j++){
-    for (unsigned k = 0; k <basePicture.height(); k++) {
-      HSLAPixel & pixel =  basePicture.getPixel(j,k);
-      pixel = basePicture.getPixel(j,k);
-    }
-  }*/
   for(unsigned i=0; i<max; i++){
-  /*  HSLAPixel & firstPixel = imageArr[i].getPixel(0,0);;
-    firstPixel.h = -1;    ///initialize NULL stickers to have negative hues
-    firstPixel.s = 0;
-    firstPixel.l = 1.0;
-    firstPixel.a = 1.0;*/
     xPosition[i]=0;
     yPosition[i]=0;
   }
@@ -67,25 +42,9 @@ StickerSheet::~StickerSheet(){
   _destroy();
 }
 StickerSheet::StickerSheet(const StickerSheet &other){
-  /*StickerSheet(*other.getBasePicture(), other.getimageArrSize());
-  for(int i=0; i<imageArrSize; i++){
-    addsticker(*other.getSticker(i), other.getxPosition(i), other.getyPosition(i));
-  }*/
-  //imageArr[0].getPixel(0,0) = NULL;
-  //_destroy();
   _copy(other);
 }
 const StickerSheet & 	StickerSheet::operator= (const StickerSheet &other){
-  /*getBasePicture
-  getSticker (unsigned index)
-  getimageArrSize()
-  getxPosition(int index)
-  getyPosition(int index)*/
-
-  /*if (this != &other) {
-    _destroy();
-    _copy(other);
-  }*/
   _destroy();
   _copy(other);
   return *this;
@@ -124,37 +83,8 @@ void 	StickerSheet::changeMaxStickers(unsigned max){
   yPosition = newyPosition;
 }
 
-  /*if(int(max)<imageArrSize){
-    for(int i = 0; i<int(max); i++){
-      copyArr[i] = imageArr[i];
-    }
-    delete [] imageArr;
-    imageArr = new Image[max];
-    for(int i = 0; i<int(max); i++){
-        imageArr[i] = copyArr[i];
-    }
-    delete [] copyArr;
-  }
-  else{
-    for(int i = 0; i<imageArrSize; i++){
-      copyArr[i] = imageArr[i];
-    }
-    delete [] imageArr;
-    imageArr = new Image[max];
-    for(int i = 0; i<imageArrSize; i++){
-        imageArr[i] = copyArr[i];
-    }
-    delete [] copyArr;
-  }*/
-
 int 	StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
   int arrFull = 0;
-/*  if(x+sticker.width()>basePicture.width()){
-    return -1;
-  }
-  else if(y+sticker.height()>basePicture.height()){
-    return -1;
-  }*/
   for(int i=0; i<imageArrSize; i++){
     if(imageArr[i].width()==0){
       imageArr[i]=sticker;
@@ -167,16 +97,10 @@ int 	StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
       arrFull = -1;
 
     }
-    //HSLAPixel & firstPixel = imageArr[i].getPixel(0,0);
-
-    /*h = 0;
-    s = 0;
-    l = 1.0;
-    a = 1.0;
-    */
   }
   return arrFull;
 }
+
 bool 	StickerSheet::translate(unsigned index, unsigned x, unsigned y){
   if(imageArr[index].width()==0){
     return false;
@@ -187,29 +111,15 @@ bool 	StickerSheet::translate(unsigned index, unsigned x, unsigned y){
     return true;
   }
 }
+
 void 	StickerSheet::removeSticker(unsigned index){
-
-  //if(xPosition[index]+imageArr[index].width()>baseP
-  /*
-  for(unsigned i = 0; i < imageArr[index].width(); i++){
-    for (unsigned j = 0; j < imageArr[index].height(); j++) {
-
-      HSLAPixel & pixel = imageArr[index].getPixel(i,j);;
-      pixel = basePicture.getPixel(i+ xPosition[i],j+yPosition[index]);
-    }
-  }
-  */
   Image emptyImage;
   imageArr[index]=emptyImage;
 
   xPosition[index]=0;
   yPosition[index]=0;
 }
-/*Image &  StickerSheet::getBasePicture(){
-  Image & returnImage = basePicture;
-  return returnImage;
-}*/
-//making basePicture a public member f*** it
+
 Image *  StickerSheet::getSticker(unsigned index){
   if(imageArr[index].width()==0){
     return NULL;
@@ -218,9 +128,8 @@ Image *  StickerSheet::getSticker(unsigned index){
   returnImagePtr = &imageArr[index];
   return returnImagePtr;
 }
-Image 	StickerSheet::render() const{
-  //return StickerSheet as an image
-  //Image newbasePicture;
+
+Image 	StickerSheet::render() const
   Image returnImage(basePicture);
   for(int i = 0; i < imageArrSize; i++){
     if((int(imageArr[i].width())+xPosition[i])>(int(returnImage.width()))){
