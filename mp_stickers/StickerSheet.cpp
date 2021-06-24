@@ -1,11 +1,12 @@
 #include "StickerSheet.h"
 
-///I initialized null stickers to have negative hues
+//Author: Michael Gulson
 
-
-
+//StickerSheet puts other images ontop of a base image.  With one basePicture and an array of images
+//This object is used to create one image with the stickers ontop of the basePicture
 
 namespace cs225{
+//copies stickersheet
 void StickerSheet::_copy(StickerSheet const & other){
   imageArrSize = other.imageArrSize;
   basePicture= other.basePicture;
@@ -19,12 +20,14 @@ void StickerSheet::_copy(StickerSheet const & other){
   }
 }
 
+//frees memory associated with stickersheet
 void StickerSheet::_destroy(){
   delete [] imageArr;
   delete [] xPosition;
   delete [] yPosition;
 }
 
+//copy constructor
 StickerSheet::StickerSheet(const Image &picture, unsigned max){
 
   basePicture = picture;
@@ -38,17 +41,25 @@ StickerSheet::StickerSheet(const Image &picture, unsigned max){
     yPosition[i]=0;
   }
 }
+
+//destructor operator
 StickerSheet::~StickerSheet(){
   _destroy();
 }
+
+//copy constructor by reference
 StickerSheet::StickerSheet(const StickerSheet &other){
   _copy(other);
 }
+
+//equal operator overload
 const StickerSheet & 	StickerSheet::operator= (const StickerSheet &other){
   _destroy();
   _copy(other);
   return *this;
 }
+
+//Changes the maximum stickers allowed on the stickersheet
 void 	StickerSheet::changeMaxStickers(unsigned max){
   Image * newimageArr = new Image[max];
   int * newxPosition = new int[max];
@@ -83,6 +94,8 @@ void 	StickerSheet::changeMaxStickers(unsigned max){
   yPosition = newyPosition;
 }
 
+
+//adds new sticker to stickersheet
 int 	StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
   int arrFull = 0;
   for(int i=0; i<imageArrSize; i++){
@@ -101,6 +114,7 @@ int 	StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
   return arrFull;
 }
 
+//
 bool 	StickerSheet::translate(unsigned index, unsigned x, unsigned y){
   if(imageArr[index].width()==0){
     return false;
@@ -112,6 +126,7 @@ bool 	StickerSheet::translate(unsigned index, unsigned x, unsigned y){
   }
 }
 
+//removes sticker from stickersheet
 void 	StickerSheet::removeSticker(unsigned index){
   Image emptyImage;
   imageArr[index]=emptyImage;
@@ -120,6 +135,7 @@ void 	StickerSheet::removeSticker(unsigned index){
   yPosition[index]=0;
 }
 
+//gets sticker from array at a given index
 Image *  StickerSheet::getSticker(unsigned index){
   if(imageArr[index].width()==0){
     return NULL;
@@ -129,6 +145,8 @@ Image *  StickerSheet::getSticker(unsigned index){
   return returnImagePtr;
 }
 
+
+//creates an image with the basepicture overlayed with stickers or renders stickersheet
 Image 	StickerSheet::render() const
   Image returnImage(basePicture);
   for(int i = 0; i < imageArrSize; i++){
@@ -143,10 +161,6 @@ Image 	StickerSheet::render() const
   for(int i = 0; i < imageArrSize; i++){
     for (int j = 0; j < int(imageArr[i].width()); j++) {
       for (int k = 0; k < int(imageArr[i].height()); k++) {
-        //double check if sticker is outside bounds for basePicture
-        /*if((j+xPosition[i])>=(int(basePicture.width())-1)||k+yPosition[i]>=(int(basePicture.height()))-1){
-          continue;
-        }*/
         HSLAPixel & pixel = returnImage.getPixel(j+xPosition[i], k+yPosition[i]);
 
         if((imageArr[i].getPixel(j,k)).a == 0){
@@ -164,55 +178,3 @@ Image 	StickerSheet::render() const
 
     return returnImage;
 }
-}    //namespace cs225{}
-
-/*    for (int j = 0; j < int(basePicture.width()); j++) {
-      for (int k = 0; k < int(basePicture.height()); k++) {
-        if(imageArr[i].width()==0){
-          continue;
-        }
-        HSLAPixel & pixel = returnImage.getPixel(j,k);
-        //j is not within xPosition-imageArr[i].width()) continue
-
-        //commented out conditions for testing
-        if(j<xPosition[i]||j>(xPosition[i]+int(imageArr[i].width())))
-          continue;
-        //k is within yPosition-imageArr[i].height()
-        else if(k<yPosition[i]||k>yPosition[i]+int(imageArr[i].height()))
-          continue;
-        //i is within xPosition-imageArr[j].width())
-        //j is within yPosition-imageArr[k].height()
-        else if(imageArr[i].getPixel(j-xPosition[i],k-yPosition[i]).a==0.0)
-          continue;
-        else
-          pixel = imageArr[i].getPixel(j-xPosition[i],k-yPosition[i]);
-      }*/
- //namespace cs225{}
-/*bool StickerSheet::operator!= (StickerSheet const & other) const {
-  return !(*this == other);
-}
-
-bool PNG::operator== (PNG const & other) const {
-  if (width_ != other.width_) { return false; }
-  if (height_ != other.height_) { return false; }
-
-  for (unsigned i = 0; i < width_ * height_; i++) {
-    HSLAPixel & p1 = imageData_[i];
-    HSLAPixel & p2 = other.imageData_[i];
-    if (p1 != p2) { return false; }
-  }
-*/
-
-/*int StickerSheet::getimageArrSize(){
-  return imageArrSize;
-}*/
-/*void StickerSheet::setimageArrSize(int size){
-  imageArrSize = size;
-}*/
-/*
-int StickerSheet::getxPosition(int index){
-  return xPosition[index];
-}
-int StickerSheet::getyPosition(int index){
-  return yPosition[index];
-*/

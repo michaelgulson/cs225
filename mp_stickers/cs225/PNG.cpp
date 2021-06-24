@@ -25,6 +25,7 @@ using std::vector;
 
 
 namespace cs225 {
+  //Copies png
   void PNG::_copy(PNG const & other) {
     // Clear self
     delete[] imageData_;
@@ -38,32 +39,38 @@ namespace cs225 {
     }
   }
 
+  //Default constructor
   PNG::PNG() {
     width_ = 0;
     height_ = 0;
     imageData_ = NULL;
   }
-
+  
+  //Constructor with parameters
   PNG::PNG(unsigned int width, unsigned int height) {
     width_ = width;
     height_ = height;
     imageData_ = new HSLAPixel[width * height];
   }
 
+  //Copy constructor
   PNG::PNG(PNG const & other) {
     imageData_ = NULL;
     _copy(other);
   }
 
+  //Destructor
   PNG::~PNG() {
     delete[] imageData_;
   }
 
+  //Equal operator overload
   PNG const & PNG::operator=(PNG const & other) {
     if (this != &other) { _copy(other); }
     return *this;
   }
 
+  //comparator operator overload
   bool PNG::operator== (PNG const & other) const {
     if (width_ != other.width_) { return false; }
     if (height_ != other.height_) { return false; }
@@ -77,10 +84,12 @@ namespace cs225 {
     return true;
   }
 
+  //not equal toperator overload
   bool PNG::operator!= (PNG const & other) const {
     return !(*this == other);
   }
 
+  //returns a pixel at the given coordinates
   HSLAPixel & PNG::getPixel(unsigned int x, unsigned int y) const {
     if (width_ == 0 || height_ == 0) {
       cerr << "ERROR: Call to cs225::PNG::getPixel() made on an image with no pixels." << endl;
@@ -106,6 +115,7 @@ namespace cs225 {
     return imageData_[index];
   }
 
+  //reads png from a file
   bool PNG::readFromFile(string const & fileName) {
     vector<unsigned char> byteData;
     unsigned error = lodepng::decode(byteData, width_, height_, fileName);
@@ -136,6 +146,7 @@ namespace cs225 {
     return true;
   }
 
+  //writes png to file
   bool PNG::writeToFile(string const & fileName) {
     unsigned char *byteData = new unsigned char[width_ * height_ * 4];
 
@@ -163,14 +174,17 @@ namespace cs225 {
     return (error == 0);
   }
 
+  //returns width of png
   unsigned int PNG::width() const {
     return width_;
   }
 
+  //returns width of png
   unsigned int PNG::height() const {
     return height_;
   }
 
+  //resizes png to new width and height
   void PNG::resize(unsigned int newWidth, unsigned int newHeight) {
     // Create a new vector to store the image data for the new (resized) image
     HSLAPixel * newImageData = new HSLAPixel[newWidth * newHeight];
