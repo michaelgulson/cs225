@@ -114,7 +114,7 @@ int 	StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
   return arrFull;
 }
 
-//
+//changes the x and y position of a sticker at a given index
 bool 	StickerSheet::translate(unsigned index, unsigned x, unsigned y){
   if(imageArr[index].width()==0){
     return false;
